@@ -1,19 +1,25 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Attacks : MonoBehaviour
 {
-    public Transform attackContainer;
     [SerializeField] private List<AttackBase> attacks;
 
-    [SerializeField] private Animator animator;
+     private Animator animator;
+    private EnemyMovement movbeh;
 
     private Transform attackTarget;
+    private AttackBase currentAttack;
+
+    private bool isAttacking;
 
     private void Awake()
     {
-        attackContainer = GetComponent<Transform>();
+        animator = GetComponent<Animator>();
+        movbeh = GetComponent<EnemyMovement>();
+        isAttacking = false;
     }
 
     private AttackBase AttackToUse()
@@ -38,18 +44,34 @@ public class Attacks : MonoBehaviour
     void Attack()
     {
         AttackBase attack = AttackToUse();
+
         if (!attack)
             return;
 
-        if(!attack.hasAni) 
-            attack.ExcuteAttack(attackTarget);
+        currentAttack = attack;
 
-        animator.SetTrigger(attack.aniTrigger);
+       StartCoroutine(  WaitForAttack(currentAttack.attackDuration));
+
+        if(!currentAttack.hasAni)
+            currentAttack.ExcuteAttack(attackTarget);
+
+        animator.SetTrigger(currentAttack.aniTrigger);
+
+        Debug.Log(currentAttack.aniTrigger);
+        movbeh.StopMoving(currentAttack.attackDuration);
+    }
+
+    public void AniTriggerAttack()
+    {
+        currentAttack.ExcuteAttack(attackTarget);
     }
 
     private void Update()
     {
         if(!attackTarget)
+            return;
+
+        if (isAttacking)
             return;
 
         Attack();
@@ -59,4 +81,13 @@ public class Attacks : MonoBehaviour
     {
         attackTarget = target;
     }
+
+    private IEnumerator WaitForAttack(float delay)
+    {
+        isAttacking = true;
+       yield return new WaitForSeconds(delay);
+
+        isAttacking = false;
+    }
+
 }

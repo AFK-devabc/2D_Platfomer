@@ -8,8 +8,8 @@ public class AttackBase : MonoBehaviour
     [SerializeField] public bool hasAni = false;
     [SerializeField] public string aniTrigger = "";
 
-    [SerializeField] protected float attackCD;
-    [SerializeField] protected float targetDuration;
+    [SerializeField] public float attackCD;
+    [SerializeField] public float attackDuration;
     [SerializeField] protected bool readyToAttack = true;
     [SerializeField] protected bool startWithCD;
 
@@ -34,7 +34,7 @@ public class AttackBase : MonoBehaviour
 
     private bool IsInDistance(float dis)
     {
-        if (dis < maxRange && maxRange > minRange)
+        if (dis < maxRange && dis > minRange)
             return true;
         return false;
     }
@@ -48,13 +48,14 @@ public class AttackBase : MonoBehaviour
 
     public virtual void ExcuteAttack(Transform targetPosi)
     {
+        if (attackCD > 0)
+            StartCoroutine(AttackCD());
     }
 
     protected IEnumerator AttackCD()
     {
+        readyToAttack = false;
         yield return new WaitForSeconds(attackCD);
-
         readyToAttack = true;
-
     }
 }
