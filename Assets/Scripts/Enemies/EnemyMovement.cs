@@ -72,6 +72,12 @@ public class EnemyMovement : MonoBehaviour
         rb.velocity = new Vector2 (0, 0);
         StartCoroutine(StopCount(time));
     }
+    
+    public void SetVelocity(Vector2 velocity)
+    {
+        rb.velocity = velocity;
+    }
+
 
     private IEnumerator StopCount(float time)
     {

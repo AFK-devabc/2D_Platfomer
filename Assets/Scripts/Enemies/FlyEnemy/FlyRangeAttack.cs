@@ -5,16 +5,17 @@ using UnityEngine;
 public class FlyRangeAttack : AttackBase
 {
     [SerializeField] private EnemyMovement movBeh;
+    [SerializeField] private GameObject flyProjectile;
+    [SerializeField] private Transform shootPoint;
+
 
     public override void ExcuteAttack(Transform targetPosi)
     {
-        readyToAttack = false;
-        movBeh.StopMoving(1.0f);
-        if (attackCD > 0)
-        {
-            StartCoroutine(AttackCD());
-        }
+
+        GameObject projectile = Instantiate(flyProjectile, shootPoint.position, Quaternion.identity);
+
+        projectile.GetComponent<ProjectileMovement>().SetTarget(targetPosi.position);
+
+        base.ExcuteAttack(targetPosi);
     }
-
-
 }
