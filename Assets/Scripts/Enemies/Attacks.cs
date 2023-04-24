@@ -50,15 +50,15 @@ public class Attacks : MonoBehaviour
 
         currentAttack = attack;
 
-       StartCoroutine(  WaitForAttack(currentAttack.attackDuration));
+       StartCoroutine(WaitForAttack(currentAttack.attackDuration));
+        movbeh.StopMoving(currentAttack.attackDuration);
 
-        if(!currentAttack.hasAni)
+        if (!currentAttack.hasAni)
             currentAttack.ExcuteAttack(attackTarget);
 
         animator.SetTrigger(currentAttack.aniTrigger);
 
         Debug.Log(currentAttack.aniTrigger);
-        movbeh.StopMoving(currentAttack.attackDuration);
     }
 
     public void AniTriggerAttack()

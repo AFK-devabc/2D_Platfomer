@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class FlyRangeAttack : AttackBase
 {
-    [SerializeField] private EnemyMovement movBeh;
     [SerializeField] private GameObject flyProjectile;
     [SerializeField] private Transform shootPoint;
 
