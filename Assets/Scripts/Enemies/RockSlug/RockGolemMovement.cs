@@ -13,7 +13,7 @@ public class RockGolemMovement : EnemyMovement
     {
         if (!rayCastCheck)
             return;
-        rb.velocity = new Vector2(isFacingRight ? movementSpeed: - movementSpeed, rb.velocity.y);
+        rb.velocity = new Vector2( isFacingRight ? movementSpeed: - movementSpeed, rb.velocity.y);
 
         if(shouldFlip())
            Flip();
