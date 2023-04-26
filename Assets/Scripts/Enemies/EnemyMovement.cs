@@ -9,6 +9,7 @@ public class EnemyMovement : MonoBehaviour
     protected Transform attackTarget;
 
     protected Rigidbody2D rb;
+    protected Animator ani;
 
     [SerializeField] private bool canMove;
 
@@ -18,6 +19,8 @@ public class EnemyMovement : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        rb.velocity = new Vector2 (0, 0);
+        ani=GetComponent<Animator>();
     }
 
     private void FixedUpdate()
