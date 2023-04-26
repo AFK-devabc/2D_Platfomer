@@ -10,12 +10,12 @@ public class EnemyMovement : MonoBehaviour
 
     protected Rigidbody2D rb;
 
-    [SerializeField] private bool canMove;
+    [SerializeField] protected bool canMove;
 
-    [SerializeField] private bool stopped;
-    [SerializeField] private bool noFlipping;
+    [SerializeField] protected bool stopped;
+    [SerializeField] protected bool noFlipping;
 
-    private void Awake()
+    public virtual void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
     }
@@ -61,7 +61,7 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    public void SetTarget(Transform target)
+    public virtual void SetTarget(Transform target)
     {
         attackTarget = target;
     }
@@ -78,8 +78,13 @@ public class EnemyMovement : MonoBehaviour
         rb.velocity = velocity;
     }
 
+    public Vector2 GetVelocity()
+    {
+        return rb.velocity;
+    }
 
-    private IEnumerator StopCount(float time)
+
+    public IEnumerator StopCount(float time)
     {
         yield return new WaitForSeconds(time);
         stopped = false;

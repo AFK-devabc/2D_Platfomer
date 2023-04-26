@@ -7,7 +7,7 @@ public class Attacks : MonoBehaviour
 {
     [SerializeField] private List<AttackBase> attacks;
 
-     private Animator animator;
+    private Animator animator;
     private EnemyMovement movbeh;
 
     private Transform attackTarget;
@@ -18,6 +18,10 @@ public class Attacks : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        if(animator == null )
+        {
+            animator = transform.GetChild( 0 ).GetComponent<Animator>();
+        }
         movbeh = GetComponent<EnemyMovement>();
         isAttacking = false;
     }
@@ -50,15 +54,16 @@ public class Attacks : MonoBehaviour
 
         currentAttack = attack;
 
-       StartCoroutine(  WaitForAttack(currentAttack.attackDuration));
+       StartCoroutine(WaitForAttack(currentAttack.attackDuration));
+        if(attack.stopMoving) 
+            movbeh.StopMoving(currentAttack.attackDuration);
 
-        if(!currentAttack.hasAni)
+        if (!currentAttack.hasAni)
             currentAttack.ExcuteAttack(attackTarget);
 
         animator.SetTrigger(currentAttack.aniTrigger);
 
         Debug.Log(currentAttack.aniTrigger);
-        movbeh.StopMoving(currentAttack.attackDuration);
     }
 
     public void AniTriggerAttack()
