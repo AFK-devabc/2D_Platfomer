@@ -17,6 +17,8 @@ public class AttackBase : MonoBehaviour
     [SerializeField] protected float minRange;
     [SerializeField] protected float maxRange;
 
+    [SerializeField] public bool stopMoving = true;
+
     public Color gizmosColor;
 
     public bool CanExcuteAttack(Vector3 targetPosi)

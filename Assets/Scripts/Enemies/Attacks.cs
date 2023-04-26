@@ -7,7 +7,7 @@ public class Attacks : MonoBehaviour
 {
     [SerializeField] private List<AttackBase> attacks;
 
-     private Animator animator;
+    private Animator animator;
     private EnemyMovement movbeh;
 
     private Transform attackTarget;
@@ -18,6 +18,10 @@ public class Attacks : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        if(animator == null )
+        {
+            animator = transform.GetChild( 0 ).GetComponent<Animator>();
+        }
         movbeh = GetComponent<EnemyMovement>();
         isAttacking = false;
     }
