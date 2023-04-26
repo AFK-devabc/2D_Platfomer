@@ -43,9 +43,9 @@ public class AttackBase : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = gizmosColor;
-        Gizmos.DrawWireSphere(transform.position, minRange);
-        Gizmos.DrawWireSphere(transform.position, maxRange);
+        //Gizmos.color = gizmosColor;
+        //Gizmos.DrawWireSphere(transform.position, minRange);
+        //Gizmos.DrawWireSphere(transform.position, maxRange);
     }
 
     public virtual void ExcuteAttack(Transform targetPosi)

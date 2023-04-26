@@ -48,7 +48,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7999255677944494383}
-  m_BodyType: 2
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -636,6 +636,7 @@ MonoBehaviour:
   haveRange: 1
   minRange: 3
   maxRange: 7.5
+  stopMoving: 1
   gizmosColor: {r: 0, g: 0, b: 0, a: 0}
   movSpeed: 10
 --- !u!1 &8155477074830234403

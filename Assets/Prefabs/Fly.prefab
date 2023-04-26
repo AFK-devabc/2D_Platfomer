@@ -803,7 +803,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3133358168732891742}
-  - component: {fileID: 3133358167826952299}
+  - component: {fileID: 1227888720264685848}
   m_Layer: 0
   m_Name: DashAttack
   m_TagString: Untagged
@@ -826,7 +826,7 @@ Transform:
   m_Father: {fileID: 3133358169138269943}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3133358167826952299
+--- !u!114 &1227888720264685848
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -835,20 +835,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 3133358168732891743}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c82156ec285ec94fa0312d1928c3dd9, type: 3}
+  m_Script: {fileID: 11500000, guid: 04a64d8b47f635e42ad2ec4da7e923c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   hasAni: 1
   aniTrigger: Dash
   attackCD: 5
-  attackDuration: 2
+  attackDuration: 1.1
   readyToAttack: 1
   startWithCD: 0
   haveRange: 1
-  minRange: 0
-  maxRange: 10
-  gizmosColor: {r: 1, g: 0, b: 0, a: 1}
-  movSpeed: 15
+  minRange: 5
+  maxRange: 7
+  stopMoving: 1
+  gizmosColor: {r: 0, g: 0, b: 0, a: 0}
+  movSpeed: 10
 --- !u!1 &3133358169093910460
 GameObject:
   m_ObjectHideFlags: 0
@@ -1235,8 +1236,8 @@ MonoBehaviour:
   rotationSpeed: 5
   minDistX: 5
   MaxDistX: 10
-  minDistY: 10
-  MaxDistY: 15
+  minDistY: 7
+  MaxDistY: 10
 --- !u!114 &3133358169556671296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1251,7 +1252,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attacks:
   - {fileID: 3133358169890221723}
-  - {fileID: 3133358167826952299}
+  - {fileID: 1227888720264685848}
 --- !u!1 &3133358169855572136
 GameObject:
   m_ObjectHideFlags: 0
@@ -1389,7 +1390,8 @@ MonoBehaviour:
   startWithCD: 0
   haveRange: 1
   minRange: 5
-  maxRange: 100
+  maxRange: 20
+  stopMoving: 1
   gizmosColor: {r: 1, g: 0.9764706, b: 0, a: 1}
   flyProjectile: {fileID: 839389270784850773, guid: c868bf5d7f4ef4f4b98e8d39b6867b0b,
     type: 3}

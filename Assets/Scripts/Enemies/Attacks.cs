@@ -81,7 +81,7 @@ public class Attacks : MonoBehaviour
         Attack();
     }
 
-    public void SetTarget(Transform target)
+    public virtual void SetTarget(Transform target)
     {
         attackTarget = target;
     }
