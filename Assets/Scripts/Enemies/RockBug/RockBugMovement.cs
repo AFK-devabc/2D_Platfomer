@@ -14,13 +14,16 @@ public class RockBugMovement : EnemyMovement
     [SerializeField] private float raycastLength;
     [SerializeField] private float idleTime;
 
+    [SerializeField] protected float movementSpeed;
+
+
     private float speedX = 0f;
     public override void NormalMovement()
     {
         if (!rayCastCheck)
             return;
-        if(isWalking)
-            rb.velocity = new Vector2(isFacingRight ? movementSpeed : -movementSpeed, rb.velocity.y);
+        if (isWalking)
+            MoveHorizontally(isFacingRight ? movementSpeed : -movementSpeed);
         if (shouldFlip())
             StartCoroutine(Flip());
     }
@@ -40,19 +43,19 @@ public class RockBugMovement : EnemyMovement
             ani.SetBool("WalkBackward", true);
             ani.SetBool("Walking", false);
         }
-        else if(dist.x > 15.0f)
+        else if (dist.x > 15.0f)
         {
             speedX = isFacingRight ? movementSpeed : -movementSpeed;
             ani.SetBool("Walking", true);
             ani.SetBool("WalkBackward", false);
         }
-        else if(dist.x > 7.5f && dist.x <10.0f)
-                {
-            ani.SetBool("WalkBackward", false); 
+        else if (dist.x > 7.5f && dist.x < 10.0f)
+        {
+            ani.SetBool("WalkBackward", false);
             ani.SetBool("Walking", false);
             speedX = 0;
         }
-        rb.velocity = new Vector2(speedX, rb.velocity.y);
+        MoveHorizontally(speedX);
 
     }
 
@@ -71,7 +74,7 @@ public class RockBugMovement : EnemyMovement
 
     private IEnumerator Flip()
     {
-        rb.velocity = new Vector2(0, rb.velocity.y);
+        StopMovementX();
         ani.SetBool("Walking", false);
         isWalking = false;
         ani.SetTrigger("Jump");

@@ -849,7 +849,7 @@ MonoBehaviour:
   maxRange: 7
   stopMoving: 1
   gizmosColor: {r: 0, g: 0, b: 0, a: 0}
-  movSpeed: 10
+  movSpeed: 20
 --- !u!1 &3133358169093910460
 GameObject:
   m_ObjectHideFlags: 0

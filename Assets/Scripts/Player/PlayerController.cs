@@ -129,7 +129,6 @@ public class PlayerController : MonoBehaviour
         playerAnimator.SetTrigger("MeleeAttackTrigger");
     }
 
-
     private void Jump(InputAction.CallbackContext context)
     {
         if (isGrounded)

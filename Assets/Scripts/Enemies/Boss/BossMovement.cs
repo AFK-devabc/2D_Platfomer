@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class BossMovement : EnemyMovement
 {
+    [SerializeField] protected float movementSpeed;
+    
     float timeAppear = 0;
-    public override void Awake()
+    public void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         transform.GetChild(0).GetComponent<Animator>().SetTrigger("Sleep");
@@ -30,7 +32,7 @@ public class BossMovement : EnemyMovement
         else timeAppear += Time.deltaTime;
     }
 
-    protected override void Flipping()
+    protected  void Flipping()
     {
         if (movementSpeed > 0)
             rb.transform.rotation = Quaternion.Euler(0, -10, 0);
@@ -38,11 +40,11 @@ public class BossMovement : EnemyMovement
             rb.transform.rotation = Quaternion.Euler(0, -140, 0);
     }
 
-    public override void SetTarget(Transform target)
-    {
-        attackTarget = target;
-        transform.GetChild(0).GetComponent<Animator>().SetTrigger("Appear");
-        stopped = false;
-        Debug.Log("appear");
-    }
+    //public override void SetTarget(Transform target)
+    //{
+    //    attackTarget = target;
+    //    transform.GetChild(0).GetComponent<Animator>().SetTrigger("Appear");
+    //    stopped = false;
+    //    Debug.Log("appear");
+    //}
 }

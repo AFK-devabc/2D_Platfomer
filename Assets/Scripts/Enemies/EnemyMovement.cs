@@ -1,32 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class EnemyMovement : MonoBehaviour
+public abstract class EnemyMovement : MonoBehaviour
 {
-
-    [SerializeField] protected float movementSpeed;
     protected Transform attackTarget;
 
-    protected Rigidbody2D rb;
-    protected Animator ani;
+    [SerializeField] protected Rigidbody2D rb;
+    [SerializeField] protected BoxCollider2D collider2D;
+    [SerializeField] private LayerMask groundLayer;
+
+    [SerializeField] protected Animator ani;
+
+    protected Vector2 velocity;
+    [SerializeField] private float safetyDistance = 0.005f;
 
     [SerializeField] protected bool canMove;
 
-    [SerializeField] protected bool stopped;
+    [SerializeField] protected float gravity;
     [SerializeField] protected bool noFlipping;
 
-    public virtual void Awake()
+
+    private void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-        rb.velocity = new Vector2 (0, 0);
-        ani=GetComponent<Animator>();
+        rb.isKinematic = true;
+        velocity = new Vector2(0, 0);
     }
 
     private void FixedUpdate()
     {
-        if(stopped) 
-            return;
+        ApplyGravity();
         if(canMove)
         {
             if(!attackTarget)
@@ -38,59 +42,98 @@ public class EnemyMovement : MonoBehaviour
                 CombatMovement();
             }
         }
-    }
 
-    public virtual void NormalMovement()
+        HandleCollisionMovement();
+        PerformMovement();
+
+    }
+    public void PerformMovement()
     {
-
+        rb.MovePosition(rb.position + velocity * Time.fixedDeltaTime);
     }
 
-    public virtual void CombatMovement()
-    {
-        if(!noFlipping)
-            Flipping();
-    }
+    public abstract void NormalMovement();
 
-    protected virtual void Flipping()
-    {
-        if(attackTarget)
-        {
-            float dir = attackTarget.position.x- transform.position.x;
-
-            if (dir > 0)
-                rb.transform.rotation = Quaternion.Euler(0, 45, 0);
-            else
-                rb.transform.rotation = Quaternion.Euler(0, -45, 0);
-        }
-    }
+    public abstract void CombatMovement();
 
     public virtual void SetTarget(Transform target)
     {
         attackTarget = target;
     }
 
-    public void StopMoving(float  time)
+    public void StopMovementBehavior(float  time)
     {
-        stopped = true;
-        rb.velocity = new Vector2 (0, 0);
+        StopMovementBothAxis();
+        canMove = false;
         StartCoroutine(StopCount(time));
     }
-    
+
+    private IEnumerator StopCount(float time)
+    {
+        yield return new WaitForSeconds(time);
+        canMove = true;
+    }
+
+    private void HandleCollisionMovement()
+    {
+        CheckCollisionForHorizontalMovement();
+        CheckCollisionForVerticallyMovement();
+    }
+
+    private void CheckCollisionForVerticallyMovement()
+    {
+        RaycastHit2D groundInfo = Physics2D.Raycast(collider2D.transform.position, collider2D.transform.up * (velocity.y > 0? 1:-1), collider2D.size.y/2, groundLayer);
+        if(groundInfo)
+        {
+            float sign = Mathf.Sign(groundInfo.point.y - transform.position.y);
+            float distance = groundInfo.distance - safetyDistance;
+            ForceMovement(new Vector2(0, sign * distance));
+            StopMovementY();
+        }
+    }
+    private void CheckCollisionForHorizontalMovement()
+    {
+        RaycastHit2D groundInfo = Physics2D.Raycast(collider2D.transform.position, collider2D.transform.right * (velocity.x > 0? 1:-1), collider2D.size.y/2, groundLayer);
+        if(groundInfo)
+        {
+            float sign = Mathf.Sign(groundInfo.point.x - transform.position.x);
+            float distance = groundInfo.distance - safetyDistance;
+            ForceMovement(new Vector2(sign * distance, 0));
+            StopMovementX();
+        }
+    }
+
     public void SetVelocity(Vector2 velocity)
     {
-        rb.velocity = velocity;
+        this.velocity = velocity;
     }
 
     public Vector2 GetVelocity()
     {
-        return rb.velocity;
+        return velocity;
     }
-
-
-    public IEnumerator StopCount(float time)
+    public void ForceMovement(Vector2 offset)
     {
-        yield return new WaitForSeconds(time);
-        stopped = false;
+        rb.position = rb.position + offset;
     }
 
+    public void MoveHorizontally(float vX)
+    {
+        velocity.x = vX;
+    }
+
+    public void MoveVertically(float vY)
+    {
+        velocity.y = vY;
+    }
+
+    public void ApplyGravity()
+    {
+        velocity += Physics2D.gravity * Time.fixedDeltaTime;
+    }
+    public void StopMovementX() => velocity.Set(0, velocity.y) ;
+
+    public void StopMovementY() => velocity.Set(velocity.x, 0);
+
+    public void StopMovementBothAxis() => velocity.Set(0, 0);
 }

@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackBase : MonoBehaviour
+public abstract class AttackBase : MonoBehaviour
 {
-
     [SerializeField] public bool hasAni = false;
     [SerializeField] public string aniTrigger = "";
 
@@ -48,13 +47,9 @@ public class AttackBase : MonoBehaviour
         //Gizmos.DrawWireSphere(transform.position, maxRange);
     }
 
-    public virtual void ExcuteAttack(Transform targetPosi)
-    {
-        if (attackCD > 0)
-            StartCoroutine(AttackCD());
-    }
+    public abstract void ExcuteAttack(Transform targetPosi);
 
-    protected IEnumerator AttackCD()
+    public IEnumerator AttackCD()
     {
         readyToAttack = false;
         yield return new WaitForSeconds(attackCD);

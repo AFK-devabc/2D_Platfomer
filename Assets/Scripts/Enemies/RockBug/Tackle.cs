@@ -10,6 +10,5 @@ public class Tackle : AttackBase
     public override void ExcuteAttack(Transform targetPosi)
     {
         transform.parent.gameObject.GetComponentInParent<EnemyMovement>().SetVelocity( new Vector2(1,0).normalized * movSpeed);
-        base.ExcuteAttack(targetPosi);
     }
 }

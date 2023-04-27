@@ -12,7 +12,6 @@ public class FlyDashAttack : AttackBase
 
         transform.parent.gameObject.GetComponentInParent<EnemyMovement>().SetVelocity(velocity.normalized * movSpeed);
 
-        base.ExcuteAttack(targetPosi);
     }
 
 }

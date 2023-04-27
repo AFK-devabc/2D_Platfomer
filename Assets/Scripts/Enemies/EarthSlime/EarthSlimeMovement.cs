@@ -12,6 +12,7 @@ public class EarthSlimeMovement : EnemyMovement
     const float SPEED_X_EARTHSLIME_WALK = 1.0f;
     const float SPEED_X_EARTHSLIME_COMBAT = 2.0f;
     float deltaSpace = SPACE_AROUND_MOVEMENT;
+    [SerializeField] protected float movementSpeed;
 
     float timePrepareToWalk = 0.0f;
 

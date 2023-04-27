@@ -1,11 +1,10 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Attacks : MonoBehaviour
 {
-    [SerializeField] private List<AttackBase> attacks;
+    private List<AttackBase> attacks;
 
     private Animator animator;
     private EnemyMovement movbeh;
@@ -18,12 +17,23 @@ public class Attacks : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        if(animator == null )
+        if(!animator)
         {
             animator = transform.GetChild( 0 ).GetComponent<Animator>();
         }
         movbeh = GetComponent<EnemyMovement>();
         isAttacking = false;
+        GetListAttacks();
+    }
+
+    public void GetListAttacks()
+    {
+        AttackBase[] listAttacks = gameObject.GetComponentsInChildren<AttackBase>();
+        attacks = new List<AttackBase>();
+        attacks.Clear();
+        for (int i = 0; i < listAttacks.Length; i++)
+            attacks.Add(listAttacks[i]);
+
     }
 
     private AttackBase AttackToUse()
@@ -48,20 +58,18 @@ public class Attacks : MonoBehaviour
     void Attack()
     {
         AttackBase attack = AttackToUse();
-
         if (!attack)
             return;
-
         currentAttack = attack;
+        StartCoroutine(WaitForAttack(currentAttack.attackDuration));
 
-       StartCoroutine(WaitForAttack(currentAttack.attackDuration));
-        movbeh.StopMoving(currentAttack.attackDuration);
+        movbeh.StopMovementBehavior(currentAttack.attackDuration);
 
         if (!currentAttack.hasAni)
             currentAttack.ExcuteAttack(attackTarget);
 
         animator.SetTrigger(currentAttack.aniTrigger);
-
+        StartCoroutine(currentAttack.AttackCD());
         Debug.Log(currentAttack.aniTrigger);
     }
 
@@ -89,9 +97,7 @@ public class Attacks : MonoBehaviour
     private IEnumerator WaitForAttack(float delay)
     {
         isAttacking = true;
-       yield return new WaitForSeconds(delay);
-
+        yield return new WaitForSeconds(delay);
         isAttacking = false;
     }
-
 }

@@ -42,3 +42,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: LateRender
+    uniqueID: 96377541
+    locked: 0

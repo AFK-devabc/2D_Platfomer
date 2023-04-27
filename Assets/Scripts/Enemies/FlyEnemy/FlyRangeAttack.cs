@@ -14,7 +14,5 @@ public class FlyRangeAttack : AttackBase
         GameObject projectile = Instantiate(flyProjectile, shootPoint.position, Quaternion.identity);
 
         projectile.GetComponent<ProjectileMovement>().SetTarget(targetPosi.position);
-        base.ExcuteAttack(targetPosi);
-
     }
 }

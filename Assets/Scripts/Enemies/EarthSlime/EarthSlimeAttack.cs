@@ -12,6 +12,5 @@ public class EarthSlimeAttack : AttackBase
         float distance = targetPosi.position.x - transform.position.x;
         Debug.Log("excute EarthSlime melee attack");
         transform.parent.gameObject.GetComponentInParent<EnemyMovement>().SetVelocity(new Vector2(distance*SPEED_X_EARTHSLIME_STTACK, SPEED_Y_EARTHSLIME_ATTACK));
-        base.ExcuteAttack(targetPosi);
     }
 }
