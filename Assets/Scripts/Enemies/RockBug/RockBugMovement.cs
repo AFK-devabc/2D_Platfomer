@@ -1,9 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem.Utilities;
-using static UnityEngine.GraphicsBuffer;
 
 public class RockBugMovement : EnemyMovement
 {
@@ -16,8 +12,6 @@ public class RockBugMovement : EnemyMovement
 
     [SerializeField] protected float movementSpeed;
 
-
-    private float speedX = 0f;
     public override void NormalMovement()
     {
         if (!rayCastCheck)
@@ -39,13 +33,13 @@ public class RockBugMovement : EnemyMovement
         }
         if (dist.x < 5.0f)
         {
-            speedX = isFacingRight ? -movementSpeed : movementSpeed;
+            MoveHorizontally( isFacingRight ? -movementSpeed : movementSpeed);
             ani.SetBool("WalkBackward", true);
             ani.SetBool("Walking", false);
         }
         else if (dist.x > 15.0f)
         {
-            speedX = isFacingRight ? movementSpeed : -movementSpeed;
+            MoveHorizontally(isFacingRight ? movementSpeed : -movementSpeed);
             ani.SetBool("Walking", true);
             ani.SetBool("WalkBackward", false);
         }
@@ -53,9 +47,8 @@ public class RockBugMovement : EnemyMovement
         {
             ani.SetBool("WalkBackward", false);
             ani.SetBool("Walking", false);
-            speedX = 0;
+            StopMovementX();
         }
-        MoveHorizontally(speedX);
 
     }
 
