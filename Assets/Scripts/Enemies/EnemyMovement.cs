@@ -24,7 +24,7 @@ public abstract class EnemyMovement : MonoBehaviour
 
     private void Start()
     {
-        rb.isKinematic = true;
+        //rb.isKinematic = true;
         velocity = new Vector2(0, 0);
     }
 
@@ -43,7 +43,6 @@ public abstract class EnemyMovement : MonoBehaviour
             }
         }
 
-        HandleCollisionMovement();
         PerformMovement();
     }
     public void PerformMovement()
@@ -73,35 +72,6 @@ public abstract class EnemyMovement : MonoBehaviour
         canMove = true;
     }
 
-    private void HandleCollisionMovement()
-    {
-        CheckCollisionForHorizontalMovement();
-        CheckCollisionForVerticallyMovement();
-    }
-
-    private void CheckCollisionForVerticallyMovement()
-    {
-        RaycastHit2D groundInfo = Physics2D.Raycast(collider2D.transform.position, collider2D.transform.up * (velocity.y > 0? 1:-1), collider2D.size.y/2, groundLayer);
-        if(groundInfo)
-        {
-            float sign = Mathf.Sign(groundInfo.point.y - transform.position.y);
-            float distance = groundInfo.distance - safetyDistance;
-            ForceMovement(new Vector2(0, sign * distance));
-            StopMovementY();
-        }
-    }
-    private void CheckCollisionForHorizontalMovement()
-    {
-        RaycastHit2D groundInfo = Physics2D.Raycast(collider2D.transform.position, collider2D.transform.right * (velocity.x > 0? 1:-1), collider2D.size.y/2, groundLayer);
-        if(groundInfo)
-        {
-            float sign = Mathf.Sign(groundInfo.point.x - transform.position.x);
-            float distance = groundInfo.distance - safetyDistance;
-            ForceMovement(new Vector2(sign * distance, 0));
-            StopMovementX();
-        }
-    }
-
     public void SetVelocity(Vector2 velocity)
     {
         this.velocity = velocity;
@@ -128,7 +98,7 @@ public abstract class EnemyMovement : MonoBehaviour
 
     public void ApplyGravity()
     {
-        velocity += Physics2D.gravity * Time.fixedDeltaTime;
+        velocity.y += gravity * Time.fixedDeltaTime;
     }
     public void StopMovementX() => velocity.Set(0, velocity.y) ;
 

@@ -7,12 +7,12 @@ public class Tackle : AttackBase
 {
     // Start is called before the first frame update
     [SerializeField] private float movSpeed;
+    [SerializeField] private EnemyMovement eneMov;
 
 
 
     public override void ExcuteAttack(Transform targetPosi)
     {
-             transform.parent.gameObject.GetComponentInParent<EnemyMovement>().SetVelocity(new Vector2(1, 0).normalized * movSpeed);
-        attackState++;
+        eneMov.MoveHorizontally((targetPosi.position.x - transform.position.x) > 0? movSpeed : -movSpeed);
     } 
 }
