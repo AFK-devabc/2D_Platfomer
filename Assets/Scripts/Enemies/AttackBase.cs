@@ -18,6 +18,8 @@ public abstract class AttackBase : MonoBehaviour
 
     [SerializeField] public bool stopMoving = true;
 
+    protected int attackState;
+
     public Color gizmosColor;
 
     public bool CanExcuteAttack(Vector3 targetPosi)
@@ -54,5 +56,6 @@ public abstract class AttackBase : MonoBehaviour
         readyToAttack = false;
         yield return new WaitForSeconds(attackCD);
         readyToAttack = true;
+        attackState = 0;
     }
 }
