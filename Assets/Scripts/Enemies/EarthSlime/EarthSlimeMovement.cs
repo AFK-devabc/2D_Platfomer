@@ -63,7 +63,7 @@ public class EarthSlimeMovement : EnemyMovement
         {
             if (timePrepareToWalk >= 0.5f)
             {
-                rb.velocity = new Vector2(movementSpeed, SPEED_Y_EARTHSLIME);
+                MoveHorizontally(movementSpeed);
                 timePrepareToWalk = 0.0f;
             }
             else timePrepareToWalk += Time.deltaTime;

@@ -45,7 +45,6 @@ public abstract class EnemyMovement : MonoBehaviour
 
         HandleCollisionMovement();
         PerformMovement();
-
     }
     public void PerformMovement()
     {
