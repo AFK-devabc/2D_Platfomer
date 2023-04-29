@@ -14,6 +14,9 @@ public class Attacks : MonoBehaviour
 
     private bool isAttacking;
 
+    [SerializeField] private float timeAppear = 0.0f;
+    private float timeAppearStart = 0.0f;
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -32,12 +35,17 @@ public class Attacks : MonoBehaviour
         attacks = new List<AttackBase>();
         attacks.Clear();
         for (int i = 0; i < listAttacks.Length; i++)
-            attacks.Add(listAttacks[i]);
+            attacks.Add(listAttacks[i]);    
 
     }
 
     private AttackBase AttackToUse()
     {
+        if(timeAppearStart < timeAppear)
+        {
+            timeAppearStart += Time.deltaTime;
+            return null;
+        }    
         List<AttackBase> availableAttacks = new List<AttackBase>();
 
         foreach (AttackBase items in attacks)
@@ -63,7 +71,8 @@ public class Attacks : MonoBehaviour
         currentAttack = attack;
         StartCoroutine(WaitForAttack(currentAttack.attackDuration));
 
-        movbeh.StopMovementBehavior(currentAttack.attackDuration);
+        if(attack.stopMoving)
+            movbeh.StopMovementBehavior(currentAttack.attackDuration);
 
         if (!currentAttack.hasAni)
             currentAttack.ExcuteAttack(attackTarget);
@@ -98,6 +107,10 @@ public class Attacks : MonoBehaviour
     {
         isAttacking = true;
         yield return new WaitForSeconds(delay);
+        if (currentAttack.isHasEventFinishAttack)
+        {
+            currentAttack.ExcuteAttack(attackTarget);
+        }
         isAttacking = false;
     }
 }

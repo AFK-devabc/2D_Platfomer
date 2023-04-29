@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.XR;
 
 public abstract class EnemyMovement : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public abstract class EnemyMovement : MonoBehaviour
 
     [SerializeField] protected Rigidbody2D rb;
     [SerializeField] protected BoxCollider2D collider2D;
-    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] protected LayerMask groundLayer;
 
     [SerializeField] protected Animator ani;
 
@@ -21,10 +22,14 @@ public abstract class EnemyMovement : MonoBehaviour
     [SerializeField] protected float gravity;
     [SerializeField] protected bool noFlipping;
 
+    [SerializeField] public float movementSpeed;
+
+    protected bool isOnPlatForm = false;
+    protected bool isJumping = false;
+    public bool isFollowPlayer = false;
 
     private void Start()
     {
-        rb.isKinematic = true;
         velocity = new Vector2(0, 0);
     }
 
@@ -42,12 +47,12 @@ public abstract class EnemyMovement : MonoBehaviour
                 CombatMovement();
             }
         }
-
-        HandleCollisionMovement();
         PerformMovement();
+        isOnPlatForm = false;
     }
     public void PerformMovement()
     {
+        //Debug.Log(velocity);
         rb.MovePosition(rb.position + velocity * Time.fixedDeltaTime);
     }
 
@@ -92,7 +97,7 @@ public abstract class EnemyMovement : MonoBehaviour
     }
     private void CheckCollisionForHorizontalMovement()
     {
-        RaycastHit2D groundInfo = Physics2D.Raycast(collider2D.transform.position, collider2D.transform.right * (velocity.x > 0? 1:-1), collider2D.size.y/2, groundLayer);
+        RaycastHit2D groundInfo = Physics2D.Raycast(collider2D.transform.position, collider2D.transform.right * (velocity.x > 0? 1:-1), collider2D.size.x/2, groundLayer);
         if(groundInfo)
         {
             float sign = Mathf.Sign(groundInfo.point.x - transform.position.x);
@@ -126,13 +131,33 @@ public abstract class EnemyMovement : MonoBehaviour
         velocity.y = vY;
     }
 
+    public void Jump(float vy)
+    {
+        isJumping = true;
+        velocity.y = vy;    
+    }
+
     public void ApplyGravity()
     {
-        velocity += Physics2D.gravity * Time.fixedDeltaTime;
+        velocity += Physics2D.gravity * gravity * Time.fixedDeltaTime;
+        if (isJumping)
+        {
+            isJumping = false;
+            return;
+        }
+        RaycastHit2D raycastHit = Physics2D.BoxCast(collider2D.bounds.center, collider2D.bounds.size, 0f, Vector2.down, 0.1f, groundLayer);
+        if(raycastHit.collider)
+        {
+            velocity.y = 0;
+            isOnPlatForm = true;
+        }
+        //velocity.y -= gravity * Time.fixedDeltaTime;
     }
     public void StopMovementX() => velocity.Set(0, velocity.y) ;
 
     public void StopMovementY() => velocity.Set(velocity.x, 0);
 
     public void StopMovementBothAxis() => velocity.Set(0, 0);
+
+    public void setIsFlowPlayer(bool isFlowPlayer) { this.isFollowPlayer = isFlowPlayer; }
 }

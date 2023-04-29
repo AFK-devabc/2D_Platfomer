@@ -1,16 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BossMovement : EnemyMovement
 {
-    [SerializeField] protected float movementSpeed;
+    const float SPEED_X_BOSS_COMBAT = 4.0f;
     
     float timeAppear = 0;
+    bool isRight = false;
+   
     public void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
-        transform.GetChild(0).GetComponent<Animator>().SetTrigger("Sleep");
+        ani.SetTrigger("Sleep");
+        velocity = new Vector2(0, 0);
+        Debug.Log("Boss sleep");
     }
 
     public override void NormalMovement()
@@ -22,29 +27,47 @@ public class BossMovement : EnemyMovement
     {
         if (timeAppear > 2.0f)
         {
-            if (movementSpeed * (rb.transform.position.x - attackTarget.position.x) > 0)
+            if(isFollowPlayer)
             {
-                Flipping();
-                movementSpeed *= -1;
+                if (Mathf.Abs(rb.transform.position.x - attackTarget.position.x) < collider2D.size.x)
+                {
+                    StopMovementX();
+                    return;
+                }
+
+                if (rb.transform.position.x - attackTarget.position.x>0)
+                {
+                    isRight = false;
+                }
+                else isRight = true;
+
+                if (movementSpeed * (rb.transform.position.x - attackTarget.position.x) > 0)
+                {
+                    movementSpeed *= -1;
+                }
             }
-            rb.velocity = new Vector2(movementSpeed, rb.velocity.y);
+            Flipping();
+            MoveHorizontally(movementSpeed);
+            
         }
         else timeAppear += Time.deltaTime;
     }
 
     protected  void Flipping()
     {
-        if (movementSpeed > 0)
-            rb.transform.rotation = Quaternion.Euler(0, -10, 0);
+        if (!isRight)
+            rb.transform.rotation = Quaternion.Euler(0, 0, 0);
         else
-            rb.transform.rotation = Quaternion.Euler(0, -140, 0);
+            rb.transform.rotation = Quaternion.Euler(0, -180, 0);
     }
 
-    //public override void SetTarget(Transform target)
-    //{
-    //    attackTarget = target;
-    //    transform.GetChild(0).GetComponent<Animator>().SetTrigger("Appear");
-    //    stopped = false;
-    //    Debug.Log("appear");
-    //}
+    public override void SetTarget(Transform target)
+    {
+        attackTarget = target;
+        ani.SetTrigger("Appear");
+        movementSpeed = SPEED_X_BOSS_COMBAT;
+        timeAppear = 0.0f;
+        isFollowPlayer = true;
+        Debug.Log("appear");
+    }
 }

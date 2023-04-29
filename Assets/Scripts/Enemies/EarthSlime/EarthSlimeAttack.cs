@@ -1,16 +1,27 @@
+using Assets.Scripts.GameConstant;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class EarthSlimeAttack : AttackBase
 {
-    const float SPEED_Y_EARTHSLIME_ATTACK = 15.0f;
-    const float SPEED_X_EARTHSLIME_STTACK = 1.0f;
-
+    int countState = 0;
     public override void ExcuteAttack(Transform targetPosi)
     {
-        float distance = targetPosi.position.x - transform.position.x;
+        switch (countState) { 
+            case 0:
+                float distance = targetPosi.position.x - transform.position.x;
+                transform.parent.gameObject.GetComponentInParent<EnemyMovement>().movementSpeed = distance * GameConstant.SPEED_X_EARTHSLIME_STTACK;
+                transform.parent.gameObject.GetComponentInParent<EnemyMovement>().Jump(GameConstant.SPEED_Y_EARTHSLIME_ATTACK);
+                countState++;
+                break;
+            case 1:
+                transform.parent.gameObject.GetComponentInParent<EnemyMovement>().movementSpeed = GameConstant.SPEED_X_BOSS_COMBATMOVEMENT;
+                countState = 0;
+                break;
+        }
+        
         Debug.Log("excute EarthSlime melee attack");
-        transform.parent.gameObject.GetComponentInParent<EnemyMovement>().SetVelocity(new Vector2(distance*SPEED_X_EARTHSLIME_STTACK, SPEED_Y_EARTHSLIME_ATTACK));
+       
     }
 }
