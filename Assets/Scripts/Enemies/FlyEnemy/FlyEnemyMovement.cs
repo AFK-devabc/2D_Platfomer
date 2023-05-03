@@ -3,8 +3,6 @@ using static UnityEngine.GraphicsBuffer;
 
 public class FlyEnemyMovement : EnemyMovement
 {
-    [SerializeField] protected float movementSpeed;
-
 
     [SerializeField] private Transform realMesh;
     [SerializeField] private float rotationSpeed;
