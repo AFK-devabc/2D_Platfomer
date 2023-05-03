@@ -841,7 +841,7 @@ MonoBehaviour:
   hasAni: 1
   aniTrigger: Dash
   attackCD: 5
-  attackDuration: 1.1
+  attackDuration: 1.5
   readyToAttack: 1
   startWithCD: 0
   haveRange: 1
@@ -1228,10 +1228,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e84770b3934ef5438a9f7bf08b90f80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 2
+  rb: {fileID: 0}
+  collider2D: {fileID: 0}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  ani: {fileID: 0}
+  safetyDistance: 0.005
   canMove: 1
-  stopped: 0
+  gravity: 0
   noFlipping: 1
+  movementSpeed: 2
   realMesh: {fileID: 3133358169870152593}
   rotationSpeed: 5
   minDistX: 5
@@ -1250,9 +1257,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db64a88bdfe1dd84d981e0ea8cca09fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attacks:
-  - {fileID: 3133358169890221723}
-  - {fileID: 1227888720264685848}
 --- !u!1 &3133358169855572136
 GameObject:
   m_ObjectHideFlags: 0

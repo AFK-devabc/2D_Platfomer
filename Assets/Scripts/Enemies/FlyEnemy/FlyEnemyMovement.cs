@@ -29,7 +29,7 @@ public class FlyEnemyMovement : EnemyMovement
         realMesh.eulerAngles =Vector3.Lerp(realMesh.eulerAngles, euler, Time.deltaTime * rotationSpeed);
 
         //Make enemy keep distance with player
-        Vector2 velocity = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized * movementSpeed;
+        velocity = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized * movementSpeed;
         if (Mathf.Abs(distX) <= minDistX)
         {
             velocity.x = 2 * movementSpeed * (distX > 0 ? 1 : -1);
@@ -47,7 +47,5 @@ public class FlyEnemyMovement : EnemyMovement
         {
             velocity.y = - movementSpeed ;
         }
-
-        rb.velocity = velocity;
     }
 }
