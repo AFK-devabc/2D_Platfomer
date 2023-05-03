@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PatrolMovemet : EnemyMovement
+public class RockSlugMovement : EnemyMovement
 {
     [SerializeField] private Transform rayCastCheck;
     [SerializeField] private LayerMask mask;

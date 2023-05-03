@@ -98,7 +98,11 @@ public abstract class EnemyMovement : MonoBehaviour
 
     public void ApplyGravity()
     {
-        velocity.y += gravity * Time.fixedDeltaTime;
+       velocity.y += gravity * Time.fixedDeltaTime;
+        RaycastHit2D raycastHit = Physics2D.BoxCast(collider2D.bounds.center, collider2D.bounds.size, 0f, Vector2.down, 0.1f, groundLayer);
+        if (raycastHit.collider)
+            velocity.y = 0;
+
     }
     public void StopMovementX() => velocity.Set(0, velocity.y) ;
 
