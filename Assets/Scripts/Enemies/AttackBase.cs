@@ -17,6 +17,7 @@ public abstract class AttackBase : MonoBehaviour
     [SerializeField] protected float maxRange;
 
     [SerializeField] public bool stopMoving = true;
+    public bool isHasEventFinishAttack = false;
 
     protected int attackState;
 

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.XR;
 
 public abstract class EnemyMovement : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public abstract class EnemyMovement : MonoBehaviour
 
     [SerializeField] protected Rigidbody2D rb;
     [SerializeField] protected BoxCollider2D collider2D;
-    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] protected LayerMask groundLayer;
 
     [SerializeField] protected Animator ani;
 
@@ -21,6 +22,11 @@ public abstract class EnemyMovement : MonoBehaviour
     [SerializeField] protected float gravity;
     [SerializeField] protected bool noFlipping;
 
+    [SerializeField] public float movementSpeed;
+
+    protected bool isOnPlatForm = false;
+    protected bool isJumping = false;
+    public bool isFollowPlayer = false;
 
     private void Start()
     {
@@ -44,9 +50,11 @@ public abstract class EnemyMovement : MonoBehaviour
         }
 
         PerformMovement();
+        isOnPlatForm = false;
     }
     public void PerformMovement()
     {
+        //Debug.Log(velocity);
         rb.MovePosition(rb.position + velocity * Time.fixedDeltaTime);
     }
 
@@ -96,17 +104,33 @@ public abstract class EnemyMovement : MonoBehaviour
         velocity.y = vY;
     }
 
+    public void Jump(float vy)
+    {
+        isJumping = true;
+        velocity.y = vy;    
+    }
+
     public void ApplyGravity()
     {
-       velocity.y += gravity * Time.fixedDeltaTime;
+        velocity += Physics2D.gravity * gravity * Time.fixedDeltaTime;
+        if (isJumping)
+        {
+            isJumping = false;
+            return;
+        }
         RaycastHit2D raycastHit = Physics2D.BoxCast(collider2D.bounds.center, collider2D.bounds.size, 0f, Vector2.down, 0.1f, groundLayer);
-        if (raycastHit.collider)
+        if(raycastHit.collider)
+        {
             velocity.y = 0;
-
+            isOnPlatForm = true;
+        }
+        //velocity.y -= gravity * Time.fixedDeltaTime;
     }
     public void StopMovementX() => velocity.Set(0, velocity.y) ;
 
     public void StopMovementY() => velocity.Set(velocity.x, 0);
 
     public void StopMovementBothAxis() => velocity.Set(0, 0);
+
+    public void setIsFlowPlayer(bool isFlowPlayer) { this.isFollowPlayer = isFlowPlayer; }
 }
