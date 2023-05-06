@@ -14,7 +14,7 @@ TagManager:
   - Enemy
   - 
   - Platform
-  - 
+  - SwordSlash
   - 
   - 
   - 
@@ -43,4 +43,7 @@ TagManager:
     locked: 0
   - name: LateRender
     uniqueID: 96377541
+    locked: 0
+  - name: UI
+    uniqueID: 3426616957
     locked: 0

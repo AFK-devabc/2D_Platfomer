@@ -6,7 +6,6 @@ public class RockSlugMovement : EnemyMovement
 {
     [SerializeField] private Transform rayCastCheck;
     [SerializeField] private LayerMask mask;
-    [SerializeField] protected float movementSpeed;
 
     private bool isFacingRight = true;
     [SerializeField] private float raycastLength;

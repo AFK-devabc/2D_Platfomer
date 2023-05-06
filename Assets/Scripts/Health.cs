@@ -4,24 +4,25 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] private float maxHealth;
-    private float health;
+    [SerializeField] protected float maxHealth;
+    protected float health;
 
-    [SerializeField] private GameObject deadEffect;
-    [SerializeField] private GameObject hitEffect;
+    private void Start()
+    {
+        health = maxHealth;
+    }
 
-    public void TakeDamage(float damage)
+    public virtual void TakeDamage(float damage)
     {
         health = health - damage;
-        hitEffect.SetActive(true);
-        if(health < 0)
+        if(health <= 0)
         {
             Die();
         }
     }
 
-    private void Die()
+    protected virtual void Die()
     {
-        deadEffect.SetActive(true);
+        Destroy(gameObject);
     }
 }

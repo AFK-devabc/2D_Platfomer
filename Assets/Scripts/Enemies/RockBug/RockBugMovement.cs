@@ -9,8 +9,7 @@ public class RockBugMovement : EnemyMovement
     private bool isWalking = true;
     [SerializeField] private float raycastLength;
     [SerializeField] private float idleTime;
-
-    [SerializeField] protected float movementSpeed;
+    private bool isGrounded = true;
 
     public override void NormalMovement()
     {
@@ -19,7 +18,7 @@ public class RockBugMovement : EnemyMovement
         if (isWalking)
             MoveHorizontally(isFacingRight ? movementSpeed : -movementSpeed);
         if (shouldFlip())
-            StartCoroutine(Flip());
+                StartCoroutine(Flip());
     }
 
     public override void CombatMovement()
@@ -60,8 +59,12 @@ public class RockBugMovement : EnemyMovement
         RaycastHit2D wallInfo = Physics2D.Raycast(rayCastCheck.position, rb.transform.right, raycastLength, mask);
         Debug.DrawRay(rayCastCheck.position, rb.transform.right * raycastLength, Color.red);
 
-        if (!groundInfo || wallInfo)
+        if ((!groundInfo && isGrounded) || wallInfo )
+        {
+            isGrounded = groundInfo;
             return true;
+        }
+        isGrounded = groundInfo;
         return false;
     }
 
@@ -70,7 +73,6 @@ public class RockBugMovement : EnemyMovement
         StopMovementX();
         ani.SetBool("Walking", false);
         isWalking = false;
-        ani.SetTrigger("Jump");
         isFacingRight = !isFacingRight;
 
         rb.transform.Rotate(0, 180f, 0);

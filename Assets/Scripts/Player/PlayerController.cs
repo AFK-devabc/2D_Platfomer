@@ -40,6 +40,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float meleeAttackTime;
     private bool isAttacking = false;
     private bool canAttack = true;
+    [SerializeField] private GameObject swordSlash;
 
     private void Awake()
     {
@@ -56,7 +57,7 @@ public class PlayerController : MonoBehaviour
 
         meleeAttack = playerInputActions.Player.MeleeAttack;
         meleeAttack.Enable();
-        meleeAttack.performed += Fire;
+        meleeAttack.performed += MeleeAttack;
    
         jump= playerInputActions.Player.Jump;   
         jump.Enable();
@@ -96,12 +97,10 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (dash.triggered && canDash)
+        if (dash.triggered && canDash && !isAttacking)
         {
             StartCoroutine(Dash());
         }
-
-
         SetAni();
     }
 
@@ -124,9 +123,14 @@ public class PlayerController : MonoBehaviour
         rb.velocity = new Vector2(horizontal * movementSpeed, rb.velocity.y);
     }
 
-    private void Fire(InputAction.CallbackContext context)
+    private void MeleeAttack(InputAction.CallbackContext context)
     {
+        if (isAttacking || isDashing)
+            return;
+        GameObject projectile = Instantiate(swordSlash, this.transform.position, Quaternion.identity);
+
         playerAnimator.SetTrigger("MeleeAttackTrigger");
+        StartCoroutine(AttackCountdown());   
     }
 
     private void Jump(InputAction.CallbackContext context)
@@ -154,12 +158,17 @@ public class PlayerController : MonoBehaviour
         isDashing = false;
     }
 
-
-
     private bool IsGrounded()
     {
         RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.down, extraHeight, platformLayer);
         return raycastHit.collider != null;
-        
     }
+
+    private IEnumerator AttackCountdown()
+    {
+        isAttacking = true;
+        yield return new WaitForSeconds(meleeAttackTime);
+        isAttacking = false;
+    }
+
 }
