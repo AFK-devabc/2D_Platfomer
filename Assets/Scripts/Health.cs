@@ -21,6 +21,16 @@ public class Health : MonoBehaviour
         }
     }
 
+    public float MaxHealth
+    {
+        get { return maxHealth; }
+    }
+
+    public float CurentHealth
+    {
+        get { return health; }
+    }
+
     protected virtual void Die()
     {
         Destroy(gameObject);

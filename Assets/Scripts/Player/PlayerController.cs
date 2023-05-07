@@ -178,6 +178,7 @@ public class PlayerController : MonoBehaviour
         if ( canDash && !isAttacking)
         {
             StartCoroutine(Dashing());
+            this.GetComponent<PlayerHealth>().AddTotalHealth(1);
         }
 
     }

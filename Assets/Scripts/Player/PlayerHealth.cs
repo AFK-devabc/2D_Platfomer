@@ -1,10 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerHealth : Health
 {
-
     private PlayerController playerController;
 
     [Header("----------Collision----------")]
@@ -54,7 +54,19 @@ public class PlayerHealth : Health
 
 
         base.TakeDamage(damage);
+        if(OnHealthChange != null)
+            OnHealthChange();
     }
+
+
+    public void AddTotalHealth(float num )
+    {
+        maxHealth += num;
+        if (OnTotalHealthChange != null)
+            OnTotalHealthChange();
+    }
+
+
     private IEnumerator InVulnerableCount(float time)
     {
         Physics2D.IgnoreLayerCollision(gameObject.layer, 6);
@@ -88,5 +100,8 @@ public class PlayerHealth : Health
             mat[i].color = meshColor[i];
         }
     }
+
+    public event Action OnHealthChange;
+    public event Action OnTotalHealthChange;
 
 }
