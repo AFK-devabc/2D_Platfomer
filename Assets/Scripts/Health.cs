@@ -12,7 +12,7 @@ public class Health : MonoBehaviour
         health = maxHealth;
     }
 
-    public virtual void TakeDamage(float damage)
+    public virtual void TakeDamage(float damage, Transform hitPos = null)
     {
         health = health - damage;
         if(health <= 0)

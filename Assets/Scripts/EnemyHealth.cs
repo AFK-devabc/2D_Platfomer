@@ -12,7 +12,7 @@ public class EnemyHealth : Health
         healthbar.SetHealth(health, maxHealth);
     }
 
-    public override void TakeDamage(float damage)
+    public override void TakeDamage(float damage, Transform hitPos = null)
     {
         health = health - damage;
         healthbar.SetHealth(health, maxHealth);

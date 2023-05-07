@@ -357,6 +357,7 @@ GameObject:
   - component: {fileID: 5365607091887717846}
   - component: {fileID: 5365607091887717845}
   - component: {fileID: 4621044343617353248}
+  - component: {fileID: 4844966206923622055}
   m_Layer: 6
   m_Name: RockBug
   m_TagString: Untagged
@@ -521,6 +522,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 5
   healthbar: {fileID: 0}
+--- !u!114 &4844966206923622055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5365607091340525258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11aff58370fa1774cbc6b1febb4b57db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5365607091360998238
 GameObject:
   m_ObjectHideFlags: 0

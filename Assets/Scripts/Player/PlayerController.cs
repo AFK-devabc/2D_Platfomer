@@ -1,12 +1,9 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.iOS;
 
 public class PlayerController : MonoBehaviour
 {
-
     [SerializeField] Animator playerAnimator;
     [SerializeField] private LayerMask platformLayer;
 
@@ -36,11 +33,15 @@ public class PlayerController : MonoBehaviour
 
     private bool isDashing = false;
     private bool canDash = true;
+
     [Header("----------MeleeAttack----------")]
     [SerializeField] private float meleeAttackTime;
     private bool isAttacking = false;
-    private bool canAttack = true;
     [SerializeField] private GameObject swordSlash;
+    [SerializeField] private Transform attackPoint;
+    [SerializeField] private Vector2 attackSize;
+    private bool isStopControl = false;
+
 
     private void Awake()
     {
@@ -48,37 +49,55 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         playerInputActions= new PlayerInputActions();
         isFacingRight = true ;
-    }
 
-    private void OnEnable()
-    {
         move = playerInputActions.Player.Move;
-        move.Enable();
 
         meleeAttack = playerInputActions.Player.MeleeAttack;
-        meleeAttack.Enable();
         meleeAttack.performed += MeleeAttack;
-   
-        jump= playerInputActions.Player.Jump;   
-        jump.Enable();
+
+        jump = playerInputActions.Player.Jump;
         jump.performed += Jump;
         jump.canceled += CancelJump;
 
         dash = playerInputActions.Player.Dashing;
-        dash.Enable();
+        dash.performed += Dash;
+       
+    }
+
+    private void OnEnable()
+    {
+        EnableInput();
     }
     private void OnDisable()
+    {
+        DisableInput();
+    }
+
+    private void DisableInput()
     {
         move.Disable();
         meleeAttack.Disable();
         jump.Disable();
         dash.Disable();
     }
+    private void EnableInput()
+    {
+        move.Enable();
+        meleeAttack.Enable();
+        jump.Enable();
+        dash.Enable();
+    }
+
     private void Update()
     {
-        if (isDashing || isAttacking)
+        if(isDashing)
+        {
             return;
-
+        }
+        if(isAttacking)
+        {
+            return;
+        }
         isGrounded = IsGrounded();
         if(isGrounded) { canDash = true; }
         horizontal = move.ReadValue<Vector2>().x;
@@ -97,10 +116,6 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (dash.triggered && canDash && !isAttacking)
-        {
-            StartCoroutine(Dash());
-        }
         SetAni();
     }
 
@@ -116,10 +131,11 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(isDashing || isAttacking)
+        if(isDashing || isAttacking || isStopControl)
         {
             return;
         }
+       
         rb.velocity = new Vector2(horizontal * movementSpeed, rb.velocity.y);
     }
 
@@ -130,9 +146,22 @@ public class PlayerController : MonoBehaviour
         GameObject projectile = Instantiate(swordSlash, this.transform.position, Quaternion.identity);
 
         playerAnimator.SetTrigger("MeleeAttackTrigger");
+
+        Collider2D[] hitEnemies = Physics2D.OverlapBoxAll(attackPoint.position, attackSize, 0);
+
+        foreach (Collider2D enemy in hitEnemies)
+        {
+            if (enemy.transform.tag == "Enemy")
+                enemy.GetComponent<Health>().TakeDamage(1);
+        }
+
         StartCoroutine(AttackCountdown());   
     }
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawCube(attackPoint.position,new Vector3(attackSize.x, attackSize.y, 1));
+    }
     private void Jump(InputAction.CallbackContext context)
     {
         if (isGrounded)
@@ -144,7 +173,15 @@ public class PlayerController : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y*0.5f);
     }
 
-    private IEnumerator Dash()
+    private void Dash(InputAction.CallbackContext context)
+    {
+        if ( canDash && !isAttacking)
+        {
+            StartCoroutine(Dashing());
+        }
+
+    }
+    private IEnumerator Dashing()
     {
         canDash = false;
         isDashing = true;
@@ -152,8 +189,11 @@ public class PlayerController : MonoBehaviour
         float originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
         rb.velocity = new Vector2(dashingVelocity * (isFacingRight ? 1 : -1), 0f);
+        Physics2D.IgnoreLayerCollision(gameObject.layer, 6);
+
         yield return new WaitForSeconds(dashingTime);
- 
+        Physics2D.IgnoreLayerCollision(gameObject.layer, 6, false);
+
         rb.gravityScale = originalGravity;
         isDashing = false;
     }
@@ -171,4 +211,20 @@ public class PlayerController : MonoBehaviour
         isAttacking = false;
     }
 
+
+    public IEnumerator StopInputActions(float time)
+    {
+        DisableInput();
+        isStopControl = true;
+        yield return new WaitForSeconds(time);
+        EnableInput();
+        isStopControl = false;
+    }
+
+    public void SetVelocity(Vector2 velocity)
+    {
+        horizontal = velocity.x;
+        rb.velocity = velocity;
+
+    }
 }
