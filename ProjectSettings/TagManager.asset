@@ -18,8 +18,8 @@ TagManager:
   - SwordSlash
   - 
   - 
-  - 
-  - 
+  - Camera
+  - CameraCollider
   - UI1
   - UI2
   - UI3

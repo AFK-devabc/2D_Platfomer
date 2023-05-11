@@ -25,6 +25,12 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private float jumpForce;
     [SerializeField] private float extraHeight;
+    [SerializeField] private float coyoteTime = 0.2f;
+    private float coyoteTimeCounter;
+
+    [SerializeField] private float jumpBufferTime = 0.2f;
+    private float jumpBufferCounter;
+
     private bool isGrounded;
 
     [Header("----------Dashing----------")]
@@ -42,6 +48,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Vector2 attackSize;
     private bool isStopControl = false;
 
+    [Header("----------Controll camera follow object----------")]
+    [SerializeField] private CameraFollowController cameraFollowController;
+    private float fallSpeedYDampingChangeThreshold;
 
     private void Awake()
     {
@@ -61,12 +70,14 @@ public class PlayerController : MonoBehaviour
 
         dash = playerInputActions.Player.Dashing;
         dash.performed += Dash;
-       
+
+        fallSpeedYDampingChangeThreshold = 15f;
     }
 
     private void OnEnable()
     {
         EnableInput();
+
     }
     private void OnDisable()
     {
@@ -90,16 +101,42 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        jumpBufferCounter -= Time.deltaTime;
+
+        if (rb.velocity.y < fallSpeedYDampingChangeThreshold && !CameraManager.instance.IsLerpingYDamping && !CameraManager.instance.LerpedFromPlayerFalling)
+        {
+            CameraManager.instance.LerpYDamping(true);
+        }
+        if (rb.velocity.y >= 0f  && !CameraManager.instance.IsLerpingYDamping && CameraManager.instance.LerpedFromPlayerFalling)
+        {
+            CameraManager.instance.LerpedFromPlayerFalling = false;
+            CameraManager.instance.LerpYDamping(false);
+        }
+
         if(isDashing)
         {
             return;
         }
+
         if(isAttacking)
         {
             return;
         }
+
         isGrounded = IsGrounded();
-        if(isGrounded) { canDash = true; }
+        if(isGrounded)
+        { 
+            canDash = true;
+            coyoteTimeCounter = coyoteTime;
+        }
+        else
+        {
+            coyoteTimeCounter -= Time.deltaTime;
+        }
+
+        if(jumpBufferCounter > 0 && coyoteTimeCounter > 0)
+            PerformJump();
+
         horizontal = move.ReadValue<Vector2>().x;
 
         if(horizontal != 0f ) 
@@ -107,12 +144,14 @@ public class PlayerController : MonoBehaviour
             if (horizontal < 0 && isFacingRight)
             {
                 isFacingRight = !isFacingRight;
-                transform.localScale = new Vector3(-1, 1, 1);
+                rb.transform.Rotate(0, 180f, 0);
+                cameraFollowController.CallTurn();
             }
             else if (horizontal > 0 && !isFacingRight)
             {
                 isFacingRight = !isFacingRight;
-                transform.localScale = new Vector3(1, 1, 1);
+                rb.transform.Rotate(0, 180f, 0);
+                cameraFollowController.CallTurn();
             }
         }
 
@@ -164,13 +203,18 @@ public class PlayerController : MonoBehaviour
     }
     private void Jump(InputAction.CallbackContext context)
     {
-        if (isGrounded)
+        jumpBufferCounter = jumpBufferTime;
+    }
+    private void PerformJump()
+    {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            coyoteTimeCounter = 0;
+            jumpBufferCounter = 0;
     }
     private void CancelJump(InputAction.CallbackContext context)
     {
-        if (isGrounded && rb.velocity.y > 0)
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y*0.5f);
+        if (!isGrounded && rb.velocity.y > 0)
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y*0.6f);
     }
 
     private void Dash(InputAction.CallbackContext context)
@@ -178,7 +222,6 @@ public class PlayerController : MonoBehaviour
         if ( canDash && !isAttacking)
         {
             StartCoroutine(Dashing());
-            this.GetComponent<PlayerHealth>().AddTotalHealth(1);
         }
 
     }
@@ -226,6 +269,5 @@ public class PlayerController : MonoBehaviour
     {
         horizontal = velocity.x;
         rb.velocity = velocity;
-
     }
 }

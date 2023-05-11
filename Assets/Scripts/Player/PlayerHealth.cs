@@ -54,16 +54,14 @@ public class PlayerHealth : Health
 
 
         base.TakeDamage(damage);
-        if(OnHealthChange != null)
-            OnHealthChange();
+        OnHealthChange?.Invoke();
     }
 
 
     public void AddTotalHealth(float num )
     {
         maxHealth += num;
-        if (OnTotalHealthChange != null)
-            OnTotalHealthChange();
+            OnTotalHealthChange?.Invoke( );
     }
 
 
