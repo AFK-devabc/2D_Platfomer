@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class CameraManager : MonoBehaviour
 {
-    public static CameraManager instance;
+    public static CameraManager instance { get; private set; }
 
     [SerializeField] private CinemachineVirtualCamera[] allVirtualCamera;
 
@@ -29,10 +29,15 @@ public class CameraManager : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null)
+        if (instance != null && instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
             instance = this;
-        
-        for(int i = 0; i <allVirtualCamera.Length; i++)
+        }
+        for (int i = 0; i <allVirtualCamera.Length; i++)
         {
             if (allVirtualCamera[i].enabled)
             {

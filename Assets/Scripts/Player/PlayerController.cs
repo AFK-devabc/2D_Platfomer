@@ -71,7 +71,7 @@ public class PlayerController : MonoBehaviour
         dash = playerInputActions.Player.Dashing;
         dash.performed += Dash;
 
-        fallSpeedYDampingChangeThreshold = 15f;
+        fallSpeedYDampingChangeThreshold = CameraManager.instance.fallSpeedYDampingThreshold;
     }
 
     private void OnEnable()
