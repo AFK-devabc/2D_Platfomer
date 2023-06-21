@@ -20,7 +20,7 @@ public class BossMovement : EnemyMovement
 
     public override void NormalMovement()
     {
-        Debug.Log("normal movement");
+        //Debug.Log("normal movement");
     }
 
     public override void CombatMovement()

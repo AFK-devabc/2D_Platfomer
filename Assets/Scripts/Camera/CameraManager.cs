@@ -37,7 +37,7 @@ public class CameraManager : MonoBehaviour
         {
             instance = this;
         }
-        for (int i = 0; i <allVirtualCamera.Length; i++)
+        for (int i = 0; i < allVirtualCamera.Length; i++)
         {
             if (allVirtualCamera[i].enabled)
             {
@@ -49,7 +49,10 @@ public class CameraManager : MonoBehaviour
         normYPanAmount = framingTransposer.m_YDamping;
 
         startTrackedObjectOffset = framingTransposer.m_TrackedObjectOffset;
+
     }
+
+    
     #region Lerp Y Damping
     public void LerpYDamping(bool isPlayerFalling)
     {

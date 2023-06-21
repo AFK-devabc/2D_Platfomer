@@ -28,7 +28,7 @@ public class KetBindManager : MonoBehaviour
         RIGHT.text = keys["RIGHT"].ToString();
         ATTACK.text = keys["ATTACK"].ToString();
         SLASH.text = keys["SLASH"].ToString();
-        JUMP.text = keys["JMUP"].ToString();
+        JUMP.text = keys["JUMP"].ToString();
     }
 
     // Update is called once per frame

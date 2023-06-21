@@ -23,8 +23,11 @@ public class PlayerController : MonoBehaviour
     private float horizontal;
     [SerializeField] private float movementSpeed;
 
+    [Header("----------Jump----------")]
     [SerializeField] private float jumpForce;
     [SerializeField] private float extraHeight;
+    [SerializeField] private int extraJump;
+    private int jumpCount;
     [SerializeField] private float coyoteTime = 0.2f;
     private float coyoteTimeCounter;
 
@@ -40,13 +43,17 @@ public class PlayerController : MonoBehaviour
     private bool isDashing = false;
     private bool canDash = true;
 
-    [Header("----------MeleeAttack----------")]
+    [Header("----------Attack----------")]
     [SerializeField] private float meleeAttackTime;
     private bool isAttacking = false;
     [SerializeField] private GameObject swordSlash;
-    [SerializeField] private Transform attackPoint;
+    [SerializeField] private GameObject playerProjectile;
+
+    [SerializeField] private float attackPoint;
     [SerializeField] private Vector2 attackSize;
     private bool isStopControl = false;
+
+    private float projectSpeed = 50.0f;
 
     [Header("----------Controll camera follow object----------")]
     [SerializeField] private CameraFollowController cameraFollowController;
@@ -57,12 +64,11 @@ public class PlayerController : MonoBehaviour
         boxCollider= GetComponent<BoxCollider2D>();
         rb = GetComponent<Rigidbody2D>();
         playerInputActions= new PlayerInputActions();
-        isFacingRight = true ;
 
         move = playerInputActions.Player.Move;
 
         meleeAttack = playerInputActions.Player.MeleeAttack;
-        meleeAttack.performed += MeleeAttack;
+        meleeAttack.performed += RangeAttack;
 
         jump = playerInputActions.Player.Jump;
         jump.performed += Jump;
@@ -71,7 +77,15 @@ public class PlayerController : MonoBehaviour
         dash = playerInputActions.Player.Dashing;
         dash.performed += Dash;
 
+
+    }
+
+    private void Start()
+    {
+        isFacingRight = true;
+
         fallSpeedYDampingChangeThreshold = CameraManager.instance.fallSpeedYDampingThreshold;
+
     }
 
     private void OnEnable()
@@ -127,6 +141,7 @@ public class PlayerController : MonoBehaviour
         if(isGrounded)
         { 
             canDash = true;
+            jumpCount = 0;
             coyoteTimeCounter = coyoteTime;
         }
         else
@@ -134,9 +149,14 @@ public class PlayerController : MonoBehaviour
             coyoteTimeCounter -= Time.deltaTime;
         }
 
-        if(jumpBufferCounter > 0 && coyoteTimeCounter > 0)
+        if(jumpBufferCounter > 0 && coyoteTimeCounter > 0 )
             PerformJump();
-
+        else if(jumpBufferCounter > 0 && jumpCount < extraJump)
+        {
+            jumpCount++;
+            Debug.Log(jumpCount);
+            PerformJump();
+        }
         horizontal = move.ReadValue<Vector2>().x;
 
         if(horizontal != 0f ) 
@@ -178,29 +198,40 @@ public class PlayerController : MonoBehaviour
         rb.velocity = new Vector2(horizontal * movementSpeed, rb.velocity.y);
     }
 
-    private void MeleeAttack(InputAction.CallbackContext context)
+    private void RangeAttack(InputAction.CallbackContext context)
     {
         if (isAttacking || isDashing)
             return;
-        GameObject projectile = Instantiate(swordSlash, this.transform.position, Quaternion.identity);
+        
+        if (move.ReadValue<Vector2>().y > 0)
+        {
+            GameObject projectile = Instantiate(playerProjectile, 
+                                                new Vector3(transform.position.x, transform.position.y + attackPoint, transform.position.z), 
+                                                Quaternion.identity);
+            projectile.GetComponent<PlayerProjectileMovement>().SetVelocity(new Vector2(0, projectSpeed));
+        }
+        else if(move.ReadValue<Vector2>().y < 0 && !isGrounded)
+        {
+            GameObject projectile = Instantiate(playerProjectile,
+                                    new Vector3(transform.position.x, transform.position.y - attackPoint, transform.position.z),
+                                    Quaternion.identity);
+            projectile.GetComponent<PlayerProjectileMovement>().SetVelocity(new Vector2(0, -projectSpeed));
 
+        }
+        else
+        {
+            GameObject projectile = Instantiate(playerProjectile,
+                                    new Vector3(transform.position.x - attackPoint * (isFacingRight ? 1:-1), transform.position.y , transform.position.z),
+                                    Quaternion.identity);
+            projectile.GetComponent<PlayerProjectileMovement>().SetVelocity(new Vector2(projectSpeed * (isFacingRight ? 1 : -1), 0));
+
+        }
         playerAnimator.SetTrigger("MeleeAttackTrigger");
 
-        Collider2D[] hitEnemies = Physics2D.OverlapBoxAll(attackPoint.position, attackSize, 0);
-
-        foreach (Collider2D enemy in hitEnemies)
-        {
-            if (enemy.transform.tag == "Enemy")
-                enemy.GetComponent<Health>().TakeDamage(1);
-        }
-
-        StartCoroutine(AttackCountdown());   
+        StartCoroutine(AttackCountdown());
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawCube(attackPoint.position,new Vector3(attackSize.x, attackSize.y, 1));
-    }
+
     private void Jump(InputAction.CallbackContext context)
     {
         jumpBufferCounter = jumpBufferTime;

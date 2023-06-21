@@ -46,11 +46,13 @@ public class PausedMenu : MonoBehaviour
 
     public void BacktoMenu()
     {
+        ResumeGame();
         SceneManager.LoadScene(0);
     }
 
     public void ExitGame()
     {
+        ResumeGame();
         Debug.Log("QUIT GAME!");
         Application.Quit();
     }

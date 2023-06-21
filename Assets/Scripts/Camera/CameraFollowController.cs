@@ -12,6 +12,7 @@ public class CameraFollowController : MonoBehaviour
     
     void Update()
     {
+        if(followObject != null) 
         this.transform.position = followObject.position;
     }
 
@@ -32,7 +33,7 @@ public class CameraFollowController : MonoBehaviour
             elapstedTime += Time.deltaTime;
 
             yRotation = Mathf.Lerp(startRotation, endRotation, elapstedTime / flipRotationTime);
-            transform.rotation = Quaternion.Euler(transform.rotation.x, yRotation, transform.rotation.y);
+            transform.rotation = Quaternion.Euler(transform.rotation.x, yRotation, transform.rotation.z);
             yield return null;
         }
     }

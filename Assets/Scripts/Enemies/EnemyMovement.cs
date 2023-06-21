@@ -52,15 +52,17 @@ public abstract class EnemyMovement : MonoBehaviour
         PerformMovement();
         isOnPlatForm = false;
     }
+
+    public abstract void NormalMovement();
+
+    public abstract void CombatMovement();
+
+
     public void PerformMovement()
     {
         //Debug.Log(velocity);
         rb.MovePosition(rb.position + velocity * Time.fixedDeltaTime);
     }
-
-    public abstract void NormalMovement();
-
-    public abstract void CombatMovement();
 
     public virtual void SetTarget(Transform target)
     {
