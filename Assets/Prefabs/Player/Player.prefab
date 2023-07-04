@@ -539,6 +539,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 5
+  deadEffect: {fileID: 5861265254115334454, guid: e811656f5e530524e828834ae4c1676c,
+    type: 3}
   collisionForce: 5
   stopControllerTime: 1
   invulnerableTime: 2

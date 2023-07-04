@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDataPersistence
 {
     [SerializeField] Animator playerAnimator;
     [SerializeField] private LayerMask platformLayer;
@@ -113,6 +113,21 @@ public class PlayerController : MonoBehaviour
         dash.Enable();
     }
 
+
+    public void LoadData(GameData data)
+    {
+        this.transform.position = data.playerPosition;
+    }
+
+    public void SaveData( GameData data)
+    {
+        data.playerPosition = this.transform.position;
+    }
+    public void ReloadData(GameData data)
+    {
+        this.transform.position = data.playerPosition;
+  
+    }
     private void Update()
     {
         jumpBufferCounter -= Time.deltaTime;

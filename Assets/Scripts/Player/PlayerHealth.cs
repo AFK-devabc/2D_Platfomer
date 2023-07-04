@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerHealth : Health
+public class PlayerHealth : Health, IDataPersistence
 {
     private PlayerController playerController;
 
@@ -17,6 +17,7 @@ public class PlayerHealth : Health
     private List<Material> mat;
     private Color[] colors = { Color.white, Color.red };
     private float flashSpeed = 0.1f;
+  private  List<Color> meshColor = new List<Color>();
 
     private void Start()
     {
@@ -35,6 +36,11 @@ public class PlayerHealth : Health
         foreach (SkinnedMeshRenderer meshRenderer in skinmesh)
         {
             mat.Add(meshRenderer.material);
+        }
+
+        for (int i = 0; i < mat.Count; i++)
+        {
+            meshColor.Add(mat[i].color);
         }
 
     }
@@ -76,12 +82,6 @@ public class PlayerHealth : Health
     {
         float elapsedTime = 0f;
         int index = 0;
-        List<Color> meshColor = new List<Color>();
-
-        for(int i =0; i<mat.Count; i++)
-        {
-            meshColor.Add(mat[i].color);
-        }
         while (elapsedTime < time)
         {
             foreach (Material mat in mat)
@@ -101,5 +101,27 @@ public class PlayerHealth : Health
 
     public event Action OnHealthChange;
     public event Action OnTotalHealthChange;
+
+    protected override void Die()
+    {
+        DataPersistenceManager.instance.ReloadGame();
+
+    }
+
+    public void LoadData(GameData data)
+    {
+        this.health = data.playerHealth;
+    }
+
+    public void SaveData(GameData data)
+    {
+        data.playerHealth = this.health;
+    }
+    public void ReloadData(GameData data)
+    {
+        this.health = maxHealth;
+        Debug.Log(health);
+
+    }
 
 }
