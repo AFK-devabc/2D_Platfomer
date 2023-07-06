@@ -7,8 +7,15 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Animator))]
 
 
-public class MagicStone : MonoBehaviour
+public class MagicStone : MonoBehaviour, IDataPersistence
 {
+    [SerializeField] private string id;
+
+    [ContextMenu("Generate ID")]
+    private void GenerateID()
+    {
+        id = System.Guid.NewGuid().ToString();
+    }
 
     [SerializeField] private int ability;
 
@@ -75,7 +82,36 @@ public class MagicStone : MonoBehaviour
             unlockMessage.SetActive(false);
             skillMessage.SetActive(true);
             particle.SetActive(true) ;
-           player.GetComponent<PlayerController>().UnlockAbility(ability) ;
+            player.GetComponent<PlayerController>().UnlockAbility(ability);
+
+
+            DataPersistenceManager.instance.SaveGame();
         }
     }
+
+    public void LoadData(GameData data)
+    {
+        if (data.abilityStones.TryGetValue(id, out isActivated))
+        {
+            animator.SetBool("activate", true);
+        }
+    }
+
+    public void SaveData(GameData data)
+    {
+        if (data.abilityStones.ContainsKey(id))
+        {
+            data.abilityStones.Remove(id);
+        }
+
+        data.abilityStones.Add(id, isActivated);
+    }
+    public void ReloadData(GameData data)
+    {
+        if (data.abilityStones.TryGetValue(id, out isActivated))
+        {
+            animator.SetBool("activate", true);
+        }
+    }
+
 }

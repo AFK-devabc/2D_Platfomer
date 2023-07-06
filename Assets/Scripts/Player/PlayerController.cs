@@ -119,16 +119,21 @@ public class PlayerController : MonoBehaviour, IDataPersistence
     public void LoadData(GameData data)
     {
         this.transform.position = data.playerPosition;
+        canUseDash = data.canUseDash;
+        extraJump = data.extraJump;
     }
 
     public void SaveData( GameData data)
     {
         data.playerPosition = this.transform.position;
+        data.extraJump = extraJump;
+        data.canUseDash = canUseDash;
     }
     public void ReloadData(GameData data)
     {
         this.transform.position = data.playerPosition;
-  
+        canUseDash = data.canUseDash;
+        extraJump = data.extraJump;
     }
     private void Update()
     {

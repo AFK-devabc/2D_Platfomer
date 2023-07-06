@@ -15,17 +15,12 @@ public class EarthSlimeMovement : EnemyMovement
 
     float timePrepareToWalk = 0.0f;
 
-    bool checkIsOnPlatForm()
-    {
-        return isOnPlatForm;    
-    }   
-
     private bool shouldFlip()
     {
         RaycastHit2D wallInfo = Physics2D.Raycast(rayCastCheck.position, rb.transform.right, raycastLength, mask);
         Debug.DrawRay(rayCastCheck.position, rb.transform.right * raycastLength, Color.red);
 
-        if (checkIsOnPlatForm())
+        if (isOnPlatForm)
         {
             RaycastHit2D groundInfo = Physics2D.Raycast(rayCastCheck.position, -rb.transform.up, raycastLength, mask);
             Debug.DrawRay(rayCastCheck.position, -rb.transform.up * raycastLength, Color.red);
@@ -42,7 +37,7 @@ public class EarthSlimeMovement : EnemyMovement
 
     public override void NormalMovement()
     {
-        if (checkIsOnPlatForm())
+        if (isOnPlatForm)
         {
             if (timePrepareToWalk >= 0.4f)
             {
@@ -62,26 +57,6 @@ public class EarthSlimeMovement : EnemyMovement
             movementSpeed *= -1;
             Flipping();
         }
-
-        //if(checkIsOnPlatForm())
-        //{
-        //    if (timePrepareToWalk >= 0.5f)
-        //    { 
-        //        rb.velocity = new Vector2(movementSpeed, SPEED_Y_EARTHSLIME);
-        //        timePrepareToWalk = 0.0f;
-        //    }
-        //    else timePrepareToWalk += Time.deltaTime;
-        //}
-        //else
-        //{
-        //    if (deltaSpace <= 0)
-        //    {
-        //        Flipping();
-        //        movementSpeed = -movementSpeed;
-        //        deltaSpace = SPACE_AROUND_MOVEMENT;
-        //    }
-        //    rb.velocity = new Vector2(movementSpeed, rb.velocity.y);
-        //}
     }
 
     protected virtual void Flipping()
@@ -94,12 +69,12 @@ public class EarthSlimeMovement : EnemyMovement
 
     public override void CombatMovement()
     {
-        if (movementSpeed * (rb.transform.position.x - attackTarget.position.x) > 0)
+        if (movementSpeed * (rb.transform.position.x - attackTarget.position.x) > 0 && isOnPlatForm)
         {
             movementSpeed *= -1;
         }
 
-        if (checkIsOnPlatForm())
+        if(isOnPlatForm)
         {
             if (timePrepareToWalk >= 0.5f)
             {
@@ -110,33 +85,13 @@ public class EarthSlimeMovement : EnemyMovement
                 StopMovementX();
                 timePrepareToWalk += Time.deltaTime; 
             }
+
         }
         else
         {
-            Flipping();
             MoveHorizontally(movementSpeed);
+            Flipping();
         }
-
-        //if (checkIsOnPlatForm())
-        //{
-        //    if (timePrepareToWalk >= 0.5f)
-        //    {
-        //        MoveHorizontally(movementSpeed);
-        //        timePrepareToWalk = 0.0f;
-        //    }
-        //    else timePrepareToWalk += Time.deltaTime;
-        //}
-        //else
-        //{
-        //    //Debug.Log(rb.transform.position.x - attackTarget.position.x +";" + movementSpeed);
-        //    if (movementSpeed*(rb.transform.position.x - attackTarget.position.x) > 0)
-        //    {
-        //        Flipping();
-        //        movementSpeed *= -1;
-        //    }   
-        //    rb.velocity = new Vector2(movementSpeed, rb.velocity.y);
-        //}
-
     }
 
     public override void SetTarget(Transform target)

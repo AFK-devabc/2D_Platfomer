@@ -7,7 +7,9 @@ public class Health : MonoBehaviour
     [SerializeField] protected float maxHealth;
     protected float health;
 
-    [SerializeField] private GameObject deadEffect;
+    [SerializeField] protected GameObject deadEffect;
+
+    protected bool isDestroyed = false;
 
     private void Start()
     {
@@ -40,6 +42,7 @@ public class Health : MonoBehaviour
             Instantiate(deadEffect, transform.position, Quaternion.identity);
         }
         gameObject.SetActive(false);
+        isDestroyed = true;
     }
 
 

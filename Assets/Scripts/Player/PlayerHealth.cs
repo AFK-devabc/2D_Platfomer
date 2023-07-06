@@ -104,13 +104,25 @@ public class PlayerHealth : Health, IDataPersistence
 
     protected override void Die()
     {
+        playerController.enabled = false;
+        Instantiate(deadEffect, transform.position, Quaternion.identity);
+        StartCoroutine(ResetGame());
+    }
+
+    private IEnumerator ResetGame()
+    {
+        
+        yield return new WaitForSeconds(3);
+        playerController.enabled = true;
+
         DataPersistenceManager.instance.ReloadGame();
 
     }
-
     public void LoadData(GameData data)
     {
         this.health = data.playerHealth;
+        OnHealthChange?.Invoke();
+
     }
 
     public void SaveData(GameData data)
@@ -121,6 +133,7 @@ public class PlayerHealth : Health, IDataPersistence
     {
         this.health = maxHealth;
         Debug.Log(health);
+        OnHealthChange?.Invoke();
 
     }
 
