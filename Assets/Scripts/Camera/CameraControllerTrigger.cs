@@ -1,7 +1,6 @@
 using Cinemachine;
 using UnityEngine;
 using UnityEditor;
-
 public class CameraControllerTrigger : MonoBehaviour
 {
     public CustomCameraInspertorObjects customCameraInspertorObjects;
@@ -51,6 +50,7 @@ public class CameraControllerTrigger : MonoBehaviour
     }
 }
 
+
 [System.Serializable]
 
 public class CustomCameraInspertorObjects
@@ -74,6 +74,8 @@ public enum PanDirection
     Left, 
     Right
 }
+
+#if UNITY_EDITOR
 
 [CustomEditor(typeof(CameraControllerTrigger))]
 public class CameraEditor : Editor
@@ -121,4 +123,5 @@ public class CameraEditor : Editor
             EditorUtility.SetDirty(cameraControllerTrigger );
         }
     }
-} 
+}
+#endif

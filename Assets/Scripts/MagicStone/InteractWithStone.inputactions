@@ -1,0 +1,34 @@
+{
+    "name": "InteractWithStone",
+    "maps": [
+        {
+            "name": "InteractMap",
+            "id": "b61aadb3-4862-47b4-86bd-5b70c20ac337",
+            "actions": [
+                {
+                    "name": "InteractItem",
+                    "type": "Button",
+                    "id": "9818f644-3cec-485f-aa05-40e883217eae",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "58f2da62-1c87-4919-9714-30f868801d9f",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "InteractItem",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

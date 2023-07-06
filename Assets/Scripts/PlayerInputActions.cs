@@ -71,6 +71,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""InteractUI"",
+                    ""type"": ""Button"",
+                    ""id"": ""b900ff5f-fa7a-4823-935b-9729506a4ff7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -313,6 +322,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Dashing"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""394bc116-d1eb-4ba6-9205-bd1a1ff1266f"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""InteractUI"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -905,6 +925,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_MeleeAttack = m_Player.FindAction("MeleeAttack", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Dashing = m_Player.FindAction("Dashing", throwIfNotFound: true);
+        m_Player_InteractUI = m_Player.FindAction("InteractUI", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -983,6 +1004,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_MeleeAttack;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Dashing;
+    private readonly InputAction m_Player_InteractUI;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -992,6 +1014,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @MeleeAttack => m_Wrapper.m_Player_MeleeAttack;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Dashing => m_Wrapper.m_Player_Dashing;
+        public InputAction @InteractUI => m_Wrapper.m_Player_InteractUI;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1016,6 +1039,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Dashing.started += instance.OnDashing;
             @Dashing.performed += instance.OnDashing;
             @Dashing.canceled += instance.OnDashing;
+            @InteractUI.started += instance.OnInteractUI;
+            @InteractUI.performed += instance.OnInteractUI;
+            @InteractUI.canceled += instance.OnInteractUI;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1035,6 +1061,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Dashing.started -= instance.OnDashing;
             @Dashing.performed -= instance.OnDashing;
             @Dashing.canceled -= instance.OnDashing;
+            @InteractUI.started -= instance.OnInteractUI;
+            @InteractUI.performed -= instance.OnInteractUI;
+            @InteractUI.canceled -= instance.OnInteractUI;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1222,6 +1251,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnMeleeAttack(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnDashing(InputAction.CallbackContext context);
+        void OnInteractUI(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

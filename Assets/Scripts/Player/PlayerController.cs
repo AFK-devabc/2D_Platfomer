@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour, IDataPersistence
     [Header("----------Jump----------")]
     [SerializeField] private float jumpForce;
     [SerializeField] private float extraHeight;
-    [SerializeField] private int extraJump;
+     private int extraJump = 0;
     private int jumpCount;
     [SerializeField] private float coyoteTime = 0.2f;
     private float coyoteTimeCounter;
@@ -37,6 +37,8 @@ public class PlayerController : MonoBehaviour, IDataPersistence
     private bool isGrounded;
 
     [Header("----------Dashing----------")]
+
+    private bool canUseDash = false;
     [SerializeField] private float dashingVelocity;
     [SerializeField] private float dashingTime;
 
@@ -265,7 +267,7 @@ public class PlayerController : MonoBehaviour, IDataPersistence
 
     private void Dash(InputAction.CallbackContext context)
     {
-        if ( canDash && !isAttacking)
+        if ( canDash && !isAttacking && canUseDash)
         {
             StartCoroutine(Dashing());
         }
@@ -315,5 +317,19 @@ public class PlayerController : MonoBehaviour, IDataPersistence
     {
         horizontal = velocity.x;
         rb.velocity = velocity;
+    }
+
+    public void UnlockAbility(int ability)
+    {
+        switch (ability)
+        {
+            case 1:
+                canUseDash = true;
+                break;
+            case 2:
+                extraJump = 1;
+                break;
+            default: break;
+        }
     }
 }
