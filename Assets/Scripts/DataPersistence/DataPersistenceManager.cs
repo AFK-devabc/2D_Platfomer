@@ -74,6 +74,7 @@ public class DataPersistenceManager : MonoBehaviour
         {
             dataPersistenceObj.ReloadData(gameData);
         }
+        CameraManager.instance.ResetCamera();
     }
 
     public void SaveGame()

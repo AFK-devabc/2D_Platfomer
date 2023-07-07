@@ -145,7 +145,15 @@ public class CameraManager : MonoBehaviour
     }
 
     #endregion
-
+    public void ResetCamera()
+    {
+        for (int i = 0; i < allVirtualCamera.Length; i++)
+        {
+            allVirtualCamera[i].enabled = false;
+        }
+        allVirtualCamera[0].enabled = true;
+        currentCamera = allVirtualCamera[0];
+    }
     #region Swap Camera
     public void SwapCamera(CinemachineVirtualCamera cameraFromLeft, CinemachineVirtualCamera cameraFromRight, Vector2 triggerExitDirection)
     {
