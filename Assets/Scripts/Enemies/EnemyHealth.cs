@@ -20,10 +20,13 @@ public class EnemyHealth : Health, IDataPersistence
     private List< MeshRenderer> mesh;
     private List< SkinnedMeshRenderer> skinmesh;
 
+    private void Start()
+    {
+        health = enemyStarts.maxHealth;
+        healthbar.SetHealth(health, enemyStarts.maxHealth);
+    }
     private void Awake()
     {
-        health = maxHealth;
-        healthbar.SetHealth(health, maxHealth);
 
         mesh = GetComponentsInChildren<MeshRenderer>().ToList<MeshRenderer>();
         skinmesh = GetComponentsInChildren<SkinnedMeshRenderer>().ToList<SkinnedMeshRenderer>();
@@ -32,7 +35,7 @@ public class EnemyHealth : Health, IDataPersistence
     public override void TakeDamage(float damage, Transform hitPos = null)
     {
         health = health - damage;
-        healthbar.SetHealth(health, maxHealth);
+        healthbar.SetHealth(health, enemyStarts.maxHealth);
         StartCoroutine(Flash(flashSpeed));
         if (health <= 0)
         {
@@ -80,7 +83,7 @@ public class EnemyHealth : Health, IDataPersistence
             isDestroyed = enemyData.isDestroyed;
             transform.position = enemyData.position;
             gameObject.SetActive(!isDestroyed);
-            health = maxHealth;
+            health = enemyStarts.maxHealth;
         }
     }
 
@@ -103,7 +106,7 @@ public class EnemyHealth : Health, IDataPersistence
             isDestroyed = enemyData.isDestroyed;
             transform.position = enemyData.position;
             gameObject.SetActive(!isDestroyed);
-            health = maxHealth;
+            health = enemyStarts.maxHealth;
         }
     }
 }

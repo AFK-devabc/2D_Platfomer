@@ -28749,6 +28749,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 578780192}
+  - component: {fileID: 578780193}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -28767,11 +28768,27 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1419604295}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &578780193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 578780191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b332566b93fe34c48b86a755a1fd6114, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flyStart: {fileID: 11400000, guid: 2bae7b5ddc69f6f49b7c0e85f7d7b417, type: 2}
+  Boss: {fileID: 11400000, guid: fbeb03dab3cd0344aae268e446232d85, type: 2}
+  RockBug: {fileID: 11400000, guid: cef7b9dead1cd294981dcb783c06982a, type: 2}
+  RockSlug: {fileID: 11400000, guid: af80895d7596f114883ade5f84884feb, type: 2}
+  earthSlime: {fileID: 11400000, guid: af80895d7596f114883ade5f84884feb, type: 2}
 --- !u!1 &579485477
 GameObject:
   m_ObjectHideFlags: 0
@@ -40205,6 +40222,12 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 9113669248423238153, guid: 9c5cc9c0ec5330642adaf56af1092523,
+        type: 3}
+      propertyPath: enemyStarts
+      value: 
+      objectReference: {fileID: 11400000, guid: e327373695519884e9a41bebfb110a6f,
+        type: 2}
     - target: {fileID: 9139164752345033044, guid: 9c5cc9c0ec5330642adaf56af1092523,
         type: 3}
       propertyPath: m_Layer
@@ -69511,52 +69534,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &1419604294
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1419604295}
-  - component: {fileID: 1419604296}
-  m_Layer: 0
-  m_Name: DataPersistenceManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1419604295
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1419604294}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 578780192}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1419604296
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1419604294}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a43c513eda07bf94db46b159ebbc8b51, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fileName: GameData
-  useEncryption: 0
 --- !u!1 &1419972381
 GameObject:
   m_ObjectHideFlags: 0
@@ -71467,6 +71444,12 @@ PrefabInstance:
       propertyPath: pauseMenu
       value: 
       objectReference: {fileID: 2034669712}
+    - target: {fileID: 7731220181788176760, guid: d58c5eb9ec2ee9546976307ce40dfaf7,
+        type: 3}
+      propertyPath: enemyStarts
+      value: 
+      objectReference: {fileID: 11400000, guid: fbeb03dab3cd0344aae268e446232d85,
+        type: 2}
     - target: {fileID: 7959690889083811134, guid: d58c5eb9ec2ee9546976307ce40dfaf7,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

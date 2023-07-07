@@ -3743,7 +3743,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eba8a6534757a4440a4c0e5e0384c4dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10
+  enemyStarts: {fileID: 11400000, guid: fbeb03dab3cd0344aae268e446232d85, type: 2}
   deadEffect: {fileID: 5861265254115334454, guid: c9880e9257b8ae642883f7c38cf6f273,
     type: 3}
   id: 21eb8ae7-2646-43ad-81b7-1752399a9127

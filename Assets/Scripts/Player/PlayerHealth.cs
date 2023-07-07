@@ -21,7 +21,7 @@ public class PlayerHealth : Health, IDataPersistence
 
     private void Start()
     {
-        health = maxHealth;
+        health = enemyStarts.maxHealth;
         playerController = gameObject.GetComponent<PlayerController>();
 
         MeshRenderer[] mesh = GetComponentsInChildren<MeshRenderer>();
@@ -66,7 +66,7 @@ public class PlayerHealth : Health, IDataPersistence
 
     public void AddTotalHealth(float num )
     {
-        maxHealth += num;
+        enemyStarts.maxHealth += num;
             OnTotalHealthChange?.Invoke( );
     }
 
@@ -131,7 +131,7 @@ public class PlayerHealth : Health, IDataPersistence
     }
     public void ReloadData(GameData data)
     {
-        this.health = maxHealth;
+        this.health = enemyStarts.maxHealth;
         Debug.Log(health);
         OnHealthChange?.Invoke();
 

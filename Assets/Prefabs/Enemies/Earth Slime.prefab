@@ -275,7 +275,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 935a10386f12add4580841e2deabbbb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 3
+  enemyStarts: {fileID: 11400000, guid: af80895d7596f114883ade5f84884feb, type: 2}
   deadEffect: {fileID: 5861265254115334454, guid: e811656f5e530524e828834ae4c1676c,
     type: 3}
   id: 

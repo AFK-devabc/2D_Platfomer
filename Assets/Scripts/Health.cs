@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] protected float maxHealth;
+    [SerializeField] protected EnemyStarts enemyStarts;
     protected float health;
 
     [SerializeField] protected GameObject deadEffect;
@@ -13,7 +13,7 @@ public class Health : MonoBehaviour
 
     private void Start()
     {
-        health = maxHealth;
+        health = enemyStarts.maxHealth;
     }
 
     public virtual void TakeDamage(float damage, Transform hitPos = null)
@@ -27,7 +27,7 @@ public class Health : MonoBehaviour
 
     public float MaxHealth
     {
-        get { return maxHealth; }
+        get { return enemyStarts.maxHealth; }
     }
 
     public float CurentHealth

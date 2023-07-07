@@ -6,7 +6,8 @@ using System.Linq;
 public class DataPersistenceManager : MonoBehaviour
 {
     [Header("File Storage Config")]
-    [SerializeField] private string fileName;
+    private string fileName;
+    public GameMode gameMode;
     [SerializeField] private bool useEncryption;
 
     private GameData gameData;
@@ -15,26 +16,33 @@ public class DataPersistenceManager : MonoBehaviour
 
     public static DataPersistenceManager instance { get; private set; }
 
+    public string filePath;
+
     private void Awake() 
     {
         Debug.Log(Application.persistentDataPath);
+        filePath = Application.persistentDataPath;
         if (instance != null) 
         {
             Debug.LogError("Found more than one Data Persistence Manager in the scene.");
+            return;
         }
         instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
-    private void Start() 
+
+    public void StartLoadGame()
     {
-        this.dataHandler = new FileDataHandler(Application.persistentDataPath, fileName, useEncryption);
+        this.dataHandler = new FileDataHandler(filePath, fileName, useEncryption);
         this.dataPersistenceObjects = FindAllDataPersistenceObjects();
         LoadGame();
     }
 
     public void NewGame() 
     {
-        this.gameData = new GameData();
+        this.gameData = new GameData(gameMode);
+        SaveGame();
     }
 
     public void LoadGame()
@@ -48,7 +56,10 @@ public class DataPersistenceManager : MonoBehaviour
             Debug.Log("No data was found. Initializing data to defaults.");
             NewGame();
         }
-
+        else
+        {
+            gameMode = gameData.gameMode;
+        }
         // push the loaded data to all other scripts that need it
         foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects) 
         {
@@ -84,4 +95,14 @@ public class DataPersistenceManager : MonoBehaviour
 
         return new List<IDataPersistence>(dataPersistenceObjects);
     }
+
+    public void SetFileName(string filename  ) 
+    {
+        this.fileName = filename;
+    }
+    public void SetGameMode(GameMode gameMode)
+    {
+        this.gameMode = gameMode;
+    }
+
 }
