@@ -30,8 +30,8 @@ public class VisionRange : MonoBehaviour
         inRange  = true;
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawWireSphere(transform.position, visionRange);
-    }
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.DrawWireSphere(transform.position, visionRange);
+    //}
 }

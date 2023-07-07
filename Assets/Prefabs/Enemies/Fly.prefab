@@ -1203,7 +1203,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b1d20ebd9a4d0c4296479682dde287d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  visionRange: 100
+  visionRange: 20
 --- !u!114 &3133358169556671167
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1260,6 +1260,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 5
+  deadEffect: {fileID: 5861265254115334454, guid: e811656f5e530524e828834ae4c1676c,
+    type: 3}
+  id: 
   healthbar: {fileID: 6553029943206152176}
   flashMaterial: {fileID: 2100000, guid: 29be18d501308304bbec41aedf49994d, type: 2}
 --- !u!114 &240207337069760004

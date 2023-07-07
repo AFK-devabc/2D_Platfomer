@@ -939,6 +939,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 5
+  deadEffect: {fileID: 5861265254115334454, guid: e811656f5e530524e828834ae4c1676c,
+    type: 3}
+  id: 
   healthbar: {fileID: 8191702628065290743}
   flashMaterial: {fileID: 2100000, guid: 29be18d501308304bbec41aedf49994d, type: 2}
 --- !u!114 &8191702628788149644

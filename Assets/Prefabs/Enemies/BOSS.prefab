@@ -3607,7 +3607,8 @@ GameObject:
   - component: {fileID: 6576178614158040848}
   - component: {fileID: 6576178614158040849}
   - component: {fileID: 6576178614158040853}
-  - component: {fileID: 7476578274027305313}
+  - component: {fileID: 7731220181788176760}
+  - component: {fileID: 5213395258330934704}
   m_Layer: 6
   m_Name: BOSS
   m_TagString: Enemy
@@ -3730,7 +3731,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeAppear: 2
---- !u!114 &7476578274027305313
+--- !u!114 &7731220181788176760
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3739,12 +3740,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 1765242383343691810}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 935a10386f12add4580841e2deabbbb3, type: 3}
+  m_Script: {fileID: 11500000, guid: eba8a6534757a4440a4c0e5e0384c4dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 5
+  maxHealth: 10
+  deadEffect: {fileID: 5861265254115334454, guid: c9880e9257b8ae642883f7c38cf6f273,
+    type: 3}
+  id: 21eb8ae7-2646-43ad-81b7-1752399a9127
   healthbar: {fileID: 5972487672992156523}
   flashMaterial: {fileID: 2100000, guid: 29be18d501308304bbec41aedf49994d, type: 2}
+  pauseMenu: {fileID: 0}
+--- !u!114 &5213395258330934704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1765242383343691810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11aff58370fa1774cbc6b1febb4b57db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollideDamage: 1
 --- !u!1 &1797848672623032732
 GameObject:
   m_ObjectHideFlags: 0

@@ -7619,18 +7619,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1761631817}
-    - target: {fileID: 589940471945787412, guid: 1144a87e4ebf1d642b455857622f5e68,
-        type: 3}
-      propertyPath: m_text
-      value: 'Start game
-
-'
-      objectReference: {fileID: 0}
-    - target: {fileID: 589940471945787412, guid: 1144a87e4ebf1d642b455857622f5e68,
-        type: 3}
-      propertyPath: m_margin.z
-      value: -13.108276
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1144a87e4ebf1d642b455857622f5e68, type: 3}
 --- !u!1001 &6347298148490399167
